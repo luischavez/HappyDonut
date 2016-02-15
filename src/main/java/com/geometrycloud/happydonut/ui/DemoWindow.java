@@ -18,6 +18,8 @@ package com.geometrycloud.happydonut.ui;
 
 import com.geometrycloud.happydonut.Main;
 
+import java.awt.CardLayout;
+
 import javax.swing.JFrame;
 
 /**
@@ -41,10 +43,12 @@ public class DemoWindow {
      * Inicializa los componentes.
      */
     private void initComponents() {
+        frame.setLayout(new CardLayout());
+
         frame.setSize(480, 600);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 
     /**
