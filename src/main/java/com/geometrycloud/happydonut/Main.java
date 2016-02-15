@@ -30,7 +30,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
 
     // Aspecto de la aplicacion.
-    public static final String LOOK_AND_FEEL = "com.jtattoo.plaf.luna.LunaLookAndFeel";
+    public static final String LOOK_AND_FEEL = "com.jtattoo.plaf.texture.TextureLookAndFeel";
 
     /**
      * Establece el aspecto de la aplicacion.
