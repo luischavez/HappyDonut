@@ -18,7 +18,6 @@ package com.geometrycloud.happydonut.ui;
 
 import com.geometrycloud.happydonut.Context;
 import com.geometrycloud.happydonut.Main;
-import com.geometrycloud.happydonut.database.DatabaseConstants;
 import com.geometrycloud.happydonut.swing.DatabaseComboBox;
 import com.geometrycloud.happydonut.swing.DatabaseComboBoxModel;
 import com.geometrycloud.happydonut.swing.Fillable;
@@ -37,6 +36,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 
 /**
  * Formulario para los productos.
@@ -59,32 +60,32 @@ public class ProductFormPanel extends FillablePanel implements ActionListener {
     private final JLabel categoryLabel = new JLabel("Categoria");
 
     // Campo para la imagen.
-    @Fillable(name = "image")
+    @Fillable(name = PRODUCTS_IMAGE)
     private final ImagePanel image = new ImagePanel();
     private final JButton searchImageButton = new JButton("Buscar..");
 
     // Campo para el nombre.
-    @Fillable(name = "name")
+    @Fillable(name = PRODUCTS_NAME)
     private final JTextField name = new JTextField();
 
     // Campo para la descripcion.
-    @Fillable(name = "description")
+    @Fillable(name = PRODUCTS_DESCRIPTION)
     private final JTextField description = new JTextField();
 
     // Campo para los ingredientes.
-    @Fillable(name = "ingrediens")
+    @Fillable(name = PRODUCTS_INGREDIENTS)
     private final JTextField ingredients = new JTextField();
 
     // Campo para el precio.
-    @Fillable(name = "price")
+    @Fillable(name = PRODUCTS_PRICE)
     private final JTextField price = new JTextField();
 
     // Campo para las existencias.
-    @Fillable(name = "stock")
+    @Fillable(name = PRODUCTS_STOCK)
     private final JTextField stock = new JTextField();
 
     // Listado de categorias.
-    @Fillable(name = "category_id")
+    @Fillable(name = PRODUCTS_CATEGORY)
     private final DatabaseComboBox category = new DatabaseComboBox();
 
     /**
@@ -101,8 +102,9 @@ public class ProductFormPanel extends FillablePanel implements ActionListener {
         image.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
         searchImageButton.addActionListener(this);
 
-        DatabaseComboBoxModel model = new DatabaseComboBoxModel("category_id", "name",
-                Context.DATABASE.table(DatabaseConstants.CATEGORY_TABLE_NAME));
+        DatabaseComboBoxModel model
+                = new DatabaseComboBoxModel(CATEGORY_PRIMARY_KEY, CATEGORY_NAME,
+                        Context.DATABASE.table(CATEGORY_TABLE_NAME));
         model.loadData();
 
         category.setModel(model);
@@ -240,7 +242,7 @@ public class ProductFormPanel extends FillablePanel implements ActionListener {
         Main.loadLookAndFeel();
         ProductFormPanel form = new ProductFormPanel();
         UiUtils.form("Product form", form, null,
-                "image", "name", "ingredients",
-                "price", "stock", "category_id");
+                PRODUCTS_IMAGE, PRODUCTS_NAME, PRODUCTS_INGREDIENTS,
+                PRODUCTS_PRICE, PRODUCTS_STOCK, PRODUCTS_CATEGORY);
     }
 }

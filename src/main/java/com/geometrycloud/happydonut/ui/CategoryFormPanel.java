@@ -29,8 +29,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -39,15 +37,14 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AbstractDocument;
 
+import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
+
 /**
  * Formulario para la tabla de categorias.
  *
  * @author Luis Chavez Bustamante
  */
 public class CategoryFormPanel extends FillablePanel implements ActionListener {
-
-    // Tamano maximo del campo nombre.
-    public static final int MAX_NAME_LENGTH = 128;
 
     // Ancho de la imagen.
     public static final int IMAGE_WIDTH = 240;
@@ -64,11 +61,11 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
     private final JButton searchImageButton = new JButton("Buscar..");
 
     // Campo imagen.
-    @Fillable(name = "image")
+    @Fillable(name = CATEGORY_IMAGE)
     private final ImagePanel image = new ImagePanel();
 
     // Campo nombre.
-    @Fillable(name = "name")
+    @Fillable(name = CATEGORY_NAME)
     private final JTextField name = new JTextField();
 
     /**
@@ -87,7 +84,8 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
         image.setSize(new Dimension(IMAGE_WIDTH, IMAGE_HEIGHT));
 
         AbstractDocument document = (AbstractDocument) name.getDocument();
-        document.setDocumentFilter(new MaxSizeFilter(MAX_NAME_LENGTH));
+        document.setDocumentFilter(
+                new MaxSizeFilter(CATEGORY_NAME_SIZE));
 
         setLayout(new GridBagLayout());
 
@@ -148,9 +146,10 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
         }
     }
 
-    public static void main(String... args) throws FileNotFoundException, IOException {
+    public static void main(String... args) {
         Main.loadLookAndFeel();
         CategoryFormPanel form = new CategoryFormPanel();
-        UiUtils.form("Category Form", form, null, "name", "image");
+        UiUtils.form("Category Form", form, null,
+                CATEGORY_IMAGE, CATEGORY_NAME);
     }
 }
