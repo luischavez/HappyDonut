@@ -87,5 +87,6 @@ public abstract class Accesor<T, V> {
     public static void registerDefaults() {
         register(JTextField.class, new JTextFieldAccesor());
         register(ImagePanel.class, new ImagePanelAccesor());
+        register(DatabaseComboBox.class, new DatabaseComboBoxAccesor());
     }
 }

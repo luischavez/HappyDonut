@@ -17,8 +17,6 @@
 package com.geometrycloud.happydonut;
 
 import com.github.luischavez.database.Database;
-import com.github.luischavez.database.configuration.ProjectSource;
-import com.github.luischavez.database.configuration.XMLBuilder;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -45,17 +43,8 @@ public class Main {
     }
 
     public static void main(String... args) {
-        // Se carga la configuracion de la base de datos.
-        Database.load(new XMLBuilder(), new ProjectSource("/database.xml"));
-        // Se obtiene una instancia de la base de datos.
-        Database database = Database.use("default");
-        /*
-         * Se abre la conexion, posteriormente se ejecutan las migraciones
-         * y finalmente se cierra la conexion.
-         */
-        database.open();
-        database.migrate();
-        database.close();
+        // Se obtiene la instancia de la base de datos.
+        Database database = Context.DATABASE;
 
         // Carga el aspecto seleccionado.
         loadLookAndFeel();

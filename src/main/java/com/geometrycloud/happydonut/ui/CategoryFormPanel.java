@@ -31,8 +31,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -94,26 +92,31 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
         setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();
-        
-        constraints.insets.set(5, 5, 5, 5);
 
-        constraints.gridx = 1;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+
+        constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(image, constraints);
 
-        constraints.gridx = 1;
+        constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(searchImageButton, constraints);
 
+        constraints.gridwidth = 1;
+        constraints.insets.set(5, 5, 5, 5);
+
         constraints.gridx = 0;
         constraints.gridy = 2;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
         add(nameLabel, constraints);
 
         constraints.gridx = 1;
@@ -147,16 +150,7 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
 
     public static void main(String... args) throws FileNotFoundException, IOException {
         Main.loadLookAndFeel();
-        Map<String, Object> values = new HashMap<>();
-        values.put("name", "Juan");
-        //values.put("image",
-        //        IOUtils.toByteArray(
-        //                new FileInputStream(new File("c:/avatar.jpg"))));
         CategoryFormPanel form = new CategoryFormPanel();
-        form.fill(values);
-        Map<String, Object> map = UiUtils.form("Category Form", form, null, "name");
-        if (null != map) {
-            map.forEach((k, v) -> System.out.printf("%s = %s\n", k, v));
-        }
+        UiUtils.form("Category Form", form, null, "name", "image");
     }
 }

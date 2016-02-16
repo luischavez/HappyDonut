@@ -16,25 +16,34 @@
  */
 package com.geometrycloud.happydonut.ui;
 
+import com.geometrycloud.happydonut.Context;
 import com.geometrycloud.happydonut.Main;
+import com.geometrycloud.happydonut.database.DatabaseConstants;
+import com.geometrycloud.happydonut.swing.DatabaseComboBox;
+import com.geometrycloud.happydonut.swing.DatabaseComboBoxModel;
+import com.geometrycloud.happydonut.swing.Fillable;
 import com.geometrycloud.happydonut.swing.FillablePanel;
 import com.geometrycloud.happydonut.swing.ImagePanel;
 import com.geometrycloud.happydonut.util.UiUtils;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Formulario para los productos.
  *
  * @author Luis Chávez Bustamante
  */
-public class ProductFormPanel extends FillablePanel {
+public class ProductFormPanel extends FillablePanel implements ActionListener {
 
     // Ancho de la imagen.
     public static final int IMAGE_WIDTH = 240;
@@ -50,26 +59,33 @@ public class ProductFormPanel extends FillablePanel {
     private final JLabel categoryLabel = new JLabel("Categoria");
 
     // Campo para la imagen.
+    @Fillable(name = "image")
     private final ImagePanel image = new ImagePanel();
     private final JButton searchImageButton = new JButton("Buscar..");
 
     // Campo para el nombre.
+    @Fillable(name = "name")
     private final JTextField name = new JTextField();
 
     // Campo para la descripcion.
+    @Fillable(name = "description")
     private final JTextField description = new JTextField();
 
     // Campo para los ingredientes.
+    @Fillable(name = "ingrediens")
     private final JTextField ingredients = new JTextField();
 
     // Campo para el precio.
+    @Fillable(name = "price")
     private final JTextField price = new JTextField();
 
     // Campo para las existencias.
+    @Fillable(name = "stock")
     private final JTextField stock = new JTextField();
 
     // Listado de categorias.
-    private final JComboBox<Object> category = new JComboBox<>();
+    @Fillable(name = "category_id")
+    private final DatabaseComboBox category = new DatabaseComboBox();
 
     /**
      * Constructor por defecto.
@@ -83,25 +99,35 @@ public class ProductFormPanel extends FillablePanel {
      */
     private void initComponents() {
         image.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+        searchImageButton.addActionListener(this);
+
+        DatabaseComboBoxModel model = new DatabaseComboBoxModel("category_id", "name",
+                Context.DATABASE.table(DatabaseConstants.CATEGORY_TABLE_NAME));
+        model.loadData();
+
+        category.setModel(model);
 
         setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();
 
-        constraints.gridx = 1;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+
+        constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(image, constraints);
 
-        constraints.gridx = 1;
+        constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(searchImageButton, constraints);
 
+        constraints.gridwidth = 1;
         constraints.insets.set(5, 5, 5, 5);
 
         constraints.gridx = 0;
@@ -145,11 +171,76 @@ public class ProductFormPanel extends FillablePanel {
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(ingredients, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
+        add(priceLabel, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 5;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        add(price, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
+        add(stockLabel, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 6;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        add(stock, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 7;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
+        add(categoryLabel, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 7;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        add(category, constraints);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (searchImageButton == e.getSource()) {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.setFileFilter(
+                    new FileNameExtensionFilter("Image Files", "jpg"));
+            int option = chooser.showOpenDialog(this);
+            if (JFileChooser.APPROVE_OPTION == option) {
+                File file = chooser.getSelectedFile();
+                image.load(file);
+                if (IMAGE_WIDTH < image.getImage().getWidth()
+                        || IMAGE_HEIGHT < image.getImage().getHeight()) {
+                    image.setBytes(null);
+                    UiUtils.warning("No se pudo cargar la imagen",
+                            "la imagen es muy grande", this);
+                }
+            }
+        }
     }
 
     public static void main(String... args) {
         Main.loadLookAndFeel();
         ProductFormPanel form = new ProductFormPanel();
-        UiUtils.form("Product form", form, null);
+        UiUtils.form("Product form", form, null,
+                "image", "name", "ingredients",
+                "price", "stock", "category_id");
     }
 }

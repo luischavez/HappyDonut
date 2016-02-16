@@ -18,26 +18,29 @@ package com.geometrycloud.happydonut.database;
 
 /**
  * Constantes de la base de datos.
- * 
+ *
  * @author Luis Chavez Bustamante
  */
 public class DatabaseConstants {
-    
+
+    // Archivo de configuracion de la base de datos.
+    public static final String DATABASE_CONFIG_FILE = "/database.xml";
+
     // Nombre de la conexion.
     public static final String DATABASE_NAME = "default";
-    
+
     // Nombre de la tabla de proveedores.
     public static final String PROVIDERS_TABLE_NAME = "providers";
-    
+
     // Nombre de la tabla de categorias.
     public static final String CATEGORY_TABLE_NAME = "categories";
-    
+
     // Nombre de la tabla de productos.
     public static final String PRODUCTS_TABLE_NAME = "products";
-    
+
     // Nombre de la tabla de ventas.
     public static final String SALES_TABLE_NAME = "sales";
-    
+
     // Nombre de la tabla de datalles de venta.
     public static final String SALE_DETAILS_TABLE_NAME = "sale_details";
 }
