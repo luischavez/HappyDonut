@@ -23,12 +23,12 @@ import com.geometrycloud.happydonut.swing.FillablePanel;
 import com.geometrycloud.happydonut.swing.ImagePanel;
 import com.geometrycloud.happydonut.util.UiUtils;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,8 +41,6 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AbstractDocument;
 
-import org.apache.commons.io.IOUtils;
-
 /**
  * Formulario para la tabla de categorias.
  *
@@ -52,6 +50,10 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
 
     // Tamano maximo del campo nombre.
     public static final int MAX_NAME_LENGTH = 128;
+
+    public static final int IMAGE_WIDTH = 190;
+
+    public static final int IMAGE_HEIGHT = 255;
 
     /*
      * Etiquetas.
@@ -81,6 +83,8 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
      */
     private void initComponents() {
         searchImageButton.addActionListener(this);
+
+        image.setSize(new Dimension(IMAGE_WIDTH, IMAGE_HEIGHT));
 
         AbstractDocument document = (AbstractDocument) name.getDocument();
         document.setDocumentFilter(new MaxSizeFilter(MAX_NAME_LENGTH));
@@ -127,6 +131,12 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
             if (JFileChooser.APPROVE_OPTION == option) {
                 File file = chooser.getSelectedFile();
                 image.load(file);
+                if (IMAGE_WIDTH < image.getImage().getWidth()
+                        || IMAGE_HEIGHT < image.getImage().getHeight()) {
+                    image.setBytes(null);
+                    UiUtils.warning("No se pudo cargar la imagen",
+                            "la imagen es muy grande", this);
+                }
             }
         }
     }
@@ -135,9 +145,9 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
         Main.loadLookAndFeel();
         Map<String, Object> values = new HashMap<>();
         values.put("name", "Juan");
-        values.put("image",
-                IOUtils.toByteArray(
-                        new FileInputStream(new File("c:/avatar.jpg"))));
+        //values.put("image",
+        //        IOUtils.toByteArray(
+        //                new FileInputStream(new File("c:/avatar.jpg"))));
         CategoryFormPanel form = new CategoryFormPanel();
         form.fill(values);
         Map<String, Object> map = UiUtils.form("Category Form", form, null);

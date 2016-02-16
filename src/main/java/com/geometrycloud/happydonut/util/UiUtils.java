@@ -79,4 +79,15 @@ public class UiUtils {
             component.repaint();
         });
     }
+
+    /**
+     * Muestra un dialogo de advertencia.
+     *
+     * @param title titulo.
+     * @param message mensaje.
+     * @param parent componente padre.
+     */
+    public static void warning(String title, Object message, JComponent parent) {
+        JOptionPane.showMessageDialog(parent, message, title, JOptionPane.WARNING_MESSAGE);
+    }
 }

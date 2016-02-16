@@ -28,6 +28,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 
 import org.apache.commons.io.IOUtils;
 
@@ -40,7 +42,7 @@ public class ImagePanel extends JPanel {
 
     // Arreglo con los datos de la imagen.
     private byte[] bytes;
-    
+
     // Imagen cargada en memoria.
     private BufferedImage image;
 
@@ -75,9 +77,23 @@ public class ImagePanel extends JPanel {
      * @param bytes arreglo con la informacion de la imagen.
      */
     public void setBytes(byte[] bytes) {
+        if (null == bytes || 0 == bytes.length) {
+            this.bytes = null;
+            image = null;
+            return;
+        }
         this.bytes = bytes;
         image = toImage();
         UiUtils.repaint(this);
+    }
+
+    /**
+     * Obtiene la imagen actual.
+     *
+     * @return imagen actual.
+     */
+    public BufferedImage getImage() {
+        return image;
     }
 
     /**
@@ -127,6 +143,11 @@ public class ImagePanel extends JPanel {
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(getWidth(), getHeight());
+    }
+
+    @Override
+    public Border getBorder() {
+        return new EtchedBorder(EtchedBorder.LOWERED);
     }
 
     @Override
