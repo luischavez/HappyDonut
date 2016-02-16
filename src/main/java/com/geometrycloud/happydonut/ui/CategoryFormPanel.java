@@ -38,6 +38,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AbstractDocument;
 
 import org.apache.commons.io.IOUtils;
@@ -119,6 +120,9 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (searchImageButton == e.getSource()) {
             JFileChooser chooser = new JFileChooser();
+            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.setFileFilter(
+                    new FileNameExtensionFilter("Image Files", "jpg"));
             int option = chooser.showOpenDialog(this);
             if (JFileChooser.APPROVE_OPTION == option) {
                 File file = chooser.getSelectedFile();
