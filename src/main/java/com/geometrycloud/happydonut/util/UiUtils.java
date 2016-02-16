@@ -55,13 +55,26 @@ public class UiUtils {
      * @param title titulo.
      * @param form formulario.
      * @param parent padre.
+     * @param required campos obligatorios.
      * @return mapa con la informacion del formulario o null si se cancela.
      */
     public static Map<String, Object> form(String title, FillablePanel form,
-            JComponent parent) {
+            JComponent parent, String... required) {
         int option = JOptionPane.showConfirmDialog(parent, form, title,
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (JOptionPane.OK_OPTION == option) {
+            Map<String, Object> map = form.get();
+            for (String field : required) {
+                if (map.containsKey(field)) {
+                    Object value = map.get(field);
+                    if (null == value || value.toString().isEmpty()) {
+                        warning("El campo no es valido",
+                                String.format("El campo %s no puede ser nulo",
+                                        field), parent);
+                        return form(title, form, parent, required);
+                    }
+                }
+            }
             return form.get();
         }
         return null;

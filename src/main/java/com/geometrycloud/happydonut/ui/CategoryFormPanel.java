@@ -51,9 +51,11 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
     // Tamano maximo del campo nombre.
     public static final int MAX_NAME_LENGTH = 128;
 
-    public static final int IMAGE_WIDTH = 190;
+    // Ancho de la imagen.
+    public static final int IMAGE_WIDTH = 240;
 
-    public static final int IMAGE_HEIGHT = 255;
+    // Alto de la imagen.
+    public static final int IMAGE_HEIGHT = 240;
 
     /*
      * Etiquetas.
@@ -150,7 +152,7 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
         //                new FileInputStream(new File("c:/avatar.jpg"))));
         CategoryFormPanel form = new CategoryFormPanel();
         form.fill(values);
-        Map<String, Object> map = UiUtils.form("Category Form", form, null);
+        Map<String, Object> map = UiUtils.form("Category Form", form, null, "name");
         if (null != map) {
             map.forEach((k, v) -> System.out.printf("%s = %s\n", k, v));
         }
