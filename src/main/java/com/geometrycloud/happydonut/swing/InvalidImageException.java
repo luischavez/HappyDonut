@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2016 Luis Chavez Bustamante
+/* 
+ * Copyright (C) 2015 GeometryCloud <http://www.geometrycloud.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +17,24 @@
 package com.geometrycloud.happydonut.swing;
 
 /**
- * Se lanza cuando un campo no esta configurado correctamente o no es del tipo
- * adecuado.
+ * Se lanza cuando ocurre un error al decodificar una imagen.
  *
- * @author Luis Chavez Bustamante
+ * @author Luis Chávez Bustamante
  */
-public class InvalidFieldException extends RuntimeException {
+public class InvalidImageException extends RuntimeException {
 
-    public InvalidFieldException() {
+    public InvalidImageException() {
     }
 
-    public InvalidFieldException(String message) {
+    public InvalidImageException(String message) {
         super(message);
     }
 
-    public InvalidFieldException(String message, Throwable cause) {
+    public InvalidImageException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public InvalidFieldException(Throwable cause) {
+    public InvalidImageException(Throwable cause) {
         super(cause);
     }
 }

@@ -16,8 +16,14 @@
  */
 package com.geometrycloud.happydonut.util;
 
+import com.geometrycloud.happydonut.swing.FillablePanel;
+
+import java.awt.EventQueue;
+import java.util.Map;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * Clase con funciones utilies para el manejo de la interfaz de usuario.
@@ -40,5 +46,37 @@ public class UiUtils {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
+
+    /**
+     * Muestra un formulario en forma de mensaje desplegable, bloquea el acceso
+     * al padre mientras esta en primer plano.
+     *
+     * @param title titulo.
+     * @param form formulario.
+     * @param parent padre.
+     * @return mapa con la informacion del formulario o null si se cancela.
+     */
+    public static Map<String, Object> form(String title, FillablePanel form,
+            JComponent parent) {
+        int option = JOptionPane.showConfirmDialog(parent, form, title,
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (JOptionPane.OK_OPTION == option) {
+            return form.get();
+        }
+        return null;
+    }
+
+    /**
+     * Repinta un componente utilizando el hilo apropiado.
+     *
+     * @param component componente a repintar.
+     */
+    public static void repaint(final JComponent component) {
+        EventQueue.invokeLater(() -> {
+            component.invalidate();
+            component.revalidate();
+            component.repaint();
+        });
     }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2016 Luis Chavez Bustamante
+/* 
+ * Copyright (C) 2015 GeometryCloud <http://www.geometrycloud.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +17,19 @@
 package com.geometrycloud.happydonut.swing;
 
 /**
- * Se lanza cuando un campo no esta configurado correctamente o no es del tipo
- * adecuado.
+ * Accesor para manejar imagenes.
  *
- * @author Luis Chavez Bustamante
+ * @author Luis Chávez Bustamante
  */
-public class InvalidFieldException extends RuntimeException {
+public class ImagePanelAccesor extends Accesor<ImagePanel, byte[]> {
 
-    public InvalidFieldException() {
+    @Override
+    public byte[] get(ImagePanel object) {
+        return object.getBytes();
     }
 
-    public InvalidFieldException(String message) {
-        super(message);
-    }
-
-    public InvalidFieldException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public InvalidFieldException(Throwable cause) {
-        super(cause);
+    @Override
+    public void set(ImagePanel object, byte[] value) {
+        object.setBytes(value);
     }
 }

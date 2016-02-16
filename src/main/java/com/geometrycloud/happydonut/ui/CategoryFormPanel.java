@@ -20,27 +20,49 @@ import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.filter.MaxSizeFilter;
 import com.geometrycloud.happydonut.swing.Fillable;
 import com.geometrycloud.happydonut.swing.FillablePanel;
+import com.geometrycloud.happydonut.swing.ImagePanel;
+import com.geometrycloud.happydonut.util.UiUtils;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * Formulario para la tabla de categorias.
  *
  * @author Luis Chavez Bustamante
  */
-public class CategoryFormPanel extends FillablePanel {
+public class CategoryFormPanel extends FillablePanel implements ActionListener {
 
     // Tamano maximo del campo nombre.
     public static final int MAX_NAME_LENGTH = 128;
 
+    /*
+     * Etiquetas.
+     */
     private final JLabel nameLabel = new JLabel("Nombre");
+
+    // Boton para la busqueda de imagenes.
+    private final JButton searchImageButton = new JButton("Buscar..");
+
+    // Campo imagen.
+    @Fillable(name = "image")
+    private final ImagePanel image = new ImagePanel();
 
     // Campo nombre.
     @Fillable(name = "name")
@@ -57,6 +79,8 @@ public class CategoryFormPanel extends FillablePanel {
      * Inicializa los componentes.
      */
     private void initComponents() {
+        searchImageButton.addActionListener(this);
+
         AbstractDocument document = (AbstractDocument) name.getDocument();
         document.setDocumentFilter(new MaxSizeFilter(MAX_NAME_LENGTH));
 
@@ -64,28 +88,57 @@ public class CategoryFormPanel extends FillablePanel {
 
         GridBagConstraints constraints = new GridBagConstraints();
 
-        constraints.gridx = 0;
+        constraints.gridx = 1;
         constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        add(image, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        add(searchImageButton, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 2;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(nameLabel, constraints);
 
         constraints.gridx = 1;
-        constraints.gridy = 0;
+        constraints.gridy = 2;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(name, constraints);
     }
 
-    public static void main(String... args) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (searchImageButton == e.getSource()) {
+            JFileChooser chooser = new JFileChooser();
+            int option = chooser.showOpenDialog(this);
+            if (JFileChooser.APPROVE_OPTION == option) {
+                File file = chooser.getSelectedFile();
+                image.load(file);
+            }
+        }
+    }
+
+    public static void main(String... args) throws FileNotFoundException, IOException {
         Main.loadLookAndFeel();
+        Map<String, Object> values = new HashMap<>();
+        values.put("name", "Juan");
+        values.put("image",
+                IOUtils.toByteArray(
+                        new FileInputStream(new File("c:/avatar.jpg"))));
         CategoryFormPanel form = new CategoryFormPanel();
-        int option = JOptionPane.showConfirmDialog(null, form, "Category Form",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (JOptionPane.OK_OPTION == option) {
-            Map<String, Object> map = form.get();
+        form.fill(values);
+        Map<String, Object> map = UiUtils.form("Category Form", form, null);
+        if (null != map) {
             map.forEach((k, v) -> System.out.printf("%s = %s\n", k, v));
         }
-        //UiUtils.launch("Category Form", new CategoryFormPanel());
     }
 }
