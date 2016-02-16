@@ -29,18 +29,59 @@ public class DatabaseConstants {
     // Nombre de la conexion.
     public static final String DATABASE_NAME = "default";
 
-    // Nombre de la tabla de proveedores.
+    // Definicion de la tabla de proveedores.
     public static final String PROVIDERS_TABLE_NAME = "providers";
+    public static final String PROVIDERS_PRIMARY_KEY = "provider_id";
+    public static final String PROVIDERS_FIRST_NAME = "first_name";
+    public static final String PROVIDERS_LAST_NAME = "last_name";
+    public static final String PROVIDERS_PHONE = "phone";
+    public static final String PROVIDERS_EMAIL = "email";
+    public static final String PROVIDERS_INGREDIENTS = "ingredients";
 
-    // Nombre de la tabla de categorias.
+    public static final int PROVIDERS_FIRST_NAME_SIZE = 128;
+    public static final int PROVIDERS_LAST_NAME_SIZE = 128;
+    public static final int PROVIDERS_PHONE_SIZE = 32;
+    public static final int PROVIDERS_EMAIL_SIZE = 128;
+
+    // Definicion de la tabla de categorias.
     public static final String CATEGORY_TABLE_NAME = "categories";
+    public static final String CATEGORY_PRIMARY_KEY = "category_id";
+    public static final String CATEGORY_IMAGE = "image";
+    public static final String CATEGORY_NAME = "name";
 
-    // Nombre de la tabla de productos.
+    public static final int CATEGORY_NAME_SIZE = 128;
+
+    // Definicion de la tabla de productos.
     public static final String PRODUCTS_TABLE_NAME = "products";
+    public static final String PRODUCTS_PRIMARY_KEY = "product_id";
+    public static final String PRODUCTS_NAME = "name";
+    public static final String PRODUCTS_DESCRIPTION = "description";
+    public static final String PRODUCTS_INGREDIENTS = "ingredients";
+    public static final String PRODUCTS_PRICE = "price";
+    public static final String PRODUCTS_STOCK = "stock";
+    public static final String PRODUCTS_IMAGE = "image";
+    public static final String PRODUCTS_CATEGORY = "category_id";
+    public static final String PRODUCTS_CREATED_AT = "created_at";
+    public static final String PRODUCTS_UPDATED_AT = "updated_at";
 
-    // Nombre de la tabla de ventas.
+    public static final int PRODUCTS_NAME_SIZE = 128;
+    public static final int PRODUCTS_PRICE_SIZE = 8;
+    public static final int PRODUCTS_PRICE_ZEROS = 2;
+
+    // Definicion de la tabla de ventas.
     public static final String SALES_TABLE_NAME = "sales";
+    public static final String SALES_PRIMARY_KEY = "sale_id";
+    public static final String SALES_SALE_DATE = "sale_date";
 
-    // Nombre de la tabla de datalles de venta.
+    // Definicion de la tabla de datalles de venta.
     public static final String SALE_DETAILS_TABLE_NAME = "sale_details";
+    public static final String SALE_DETAILS_PRIMARY_KEY = "sale_detail_id";
+    public static final String SALE_DETAILS_NAME = "name";
+    public static final String SALE_DETAILS_PRICE = "price";
+    public static final String SALE_DETAILS_QUANTITY = "quantity";
+    public static final String SALE_DETAILS_SALE = "sale_id";
+    
+    public static final int SALE_DETAILS_NAME_SIZE = 128;
+    public static final int SALE_DETAILS_PRICE_SIZE = 8;
+    public static final int SALE_DETAILS_PRICE_ZEROS = 2;
 }

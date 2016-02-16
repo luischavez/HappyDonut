@@ -19,40 +19,42 @@ package com.geometrycloud.happydonut.database;
 import com.github.luischavez.database.Database;
 import com.github.luischavez.database.Migration;
 
+import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
+
 /**
  * Migracion para la tabla de proveedores, en esta tabla se almacenara la
  * informacion de los proveedores de ingredientes.
- * 
+ *
  * @author Luis Chavez Bustamante
  */
 public class CreateProvidersTable implements Migration {
 
     /**
      * Se crea la estructura de la tabla.
-     * 
+     *
      * @param database instancia de la base de datos.
      */
     @Override
     public void up(Database database) {
-        database.create(DatabaseConstants.PROVIDERS_TABLE_NAME, (table) -> {
-            table.integer("provider_id").unsigned().incremented();
-            table.string("first_name", 128);
-            table.string("last_name", 128);
-            table.string("phone", 32);
-            table.string("email", 128);
-            table.text("ingredients");
-            
-            table.primary("provider_id");
+        database.create(PROVIDERS_TABLE_NAME, (table) -> {
+            table.integer(PROVIDERS_PRIMARY_KEY).unsigned().incremented();
+            table.string(PROVIDERS_FIRST_NAME, PROVIDERS_FIRST_NAME_SIZE);
+            table.string(PROVIDERS_LAST_NAME, PROVIDERS_LAST_NAME_SIZE);
+            table.string(PROVIDERS_PHONE, PROVIDERS_PHONE_SIZE);
+            table.string(PROVIDERS_EMAIL, PROVIDERS_EMAIL_SIZE);
+            table.text(PROVIDERS_INGREDIENTS);
+
+            table.primary(PROVIDERS_PRIMARY_KEY);
         });
     }
 
     /**
      * Se elimina la tabla de la base de datos.
-     * 
+     *
      * @param database instancia de la base de datos.
      */
     @Override
     public void down(Database database) {
-        database.drop(DatabaseConstants.PROVIDERS_TABLE_NAME);
+        database.drop(PROVIDERS_TABLE_NAME);
     }
 }

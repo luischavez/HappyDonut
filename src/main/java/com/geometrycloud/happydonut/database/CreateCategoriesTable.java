@@ -19,6 +19,8 @@ package com.geometrycloud.happydonut.database;
 import com.github.luischavez.database.Database;
 import com.github.luischavez.database.Migration;
 
+import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
+
 /**
  * Migracion para la tabla de categorias, en esta tabla se almacenaran las
  * categorias de los productos.
@@ -34,12 +36,12 @@ public class CreateCategoriesTable implements Migration {
      */
     @Override
     public void up(Database database) {
-        database.create(DatabaseConstants.CATEGORY_TABLE_NAME, (table) -> {
-            table.integer("category_id").unsigned().incremented();
-            table.string("name", 128);
-            table.binary("image");
+        database.create(CATEGORY_TABLE_NAME, (table) -> {
+            table.integer(CATEGORY_PRIMARY_KEY).unsigned().incremented();
+            table.string(CATEGORY_NAME, CATEGORY_NAME_SIZE);
+            table.binary(CATEGORY_IMAGE);
 
-            table.primary("category_id");
+            table.primary(CATEGORY_PRIMARY_KEY);
         });
     }
 
@@ -50,6 +52,6 @@ public class CreateCategoriesTable implements Migration {
      */
     @Override
     public void down(Database database) {
-        database.drop(DatabaseConstants.CATEGORY_TABLE_NAME);
+        database.drop(CATEGORY_TABLE_NAME);
     }
 }

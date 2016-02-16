@@ -19,6 +19,8 @@ package com.geometrycloud.happydonut.database;
 import com.github.luischavez.database.Database;
 import com.github.luischavez.database.Migration;
 
+import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
+
 /**
  * Migracion para la tabla de ventas, en esta tabla se almacenara la informacion
  * de las ventas.
@@ -34,11 +36,11 @@ public class CreateSalesTable implements Migration {
      */
     @Override
     public void up(Database database) {
-        database.create(DatabaseConstants.SALES_TABLE_NAME, (table) -> {
-            table.integer("sale_id").unsigned().incremented();
-            table.dateTime("sale_date");
+        database.create(SALES_TABLE_NAME, (table) -> {
+            table.integer(SALES_PRIMARY_KEY).unsigned().incremented();
+            table.dateTime(SALES_SALE_DATE);
 
-            table.primary("sale_id");
+            table.primary(SALES_PRIMARY_KEY);
         });
     }
 
@@ -49,6 +51,6 @@ public class CreateSalesTable implements Migration {
      */
     @Override
     public void down(Database database) {
-        database.drop(DatabaseConstants.SALES_TABLE_NAME);
+        database.drop(SALES_TABLE_NAME);
     }
 }

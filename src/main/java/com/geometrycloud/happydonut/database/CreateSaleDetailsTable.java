@@ -19,42 +19,45 @@ package com.geometrycloud.happydonut.database;
 import com.github.luischavez.database.Database;
 import com.github.luischavez.database.Migration;
 
+import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
+
 /**
- * Migracion para la tabla de detalles de venta, en esta tabla se almacenara
- * la informacion de los detalles de cada venta.
- * 
+ * Migracion para la tabla de detalles de venta, en esta tabla se almacenara la
+ * informacion de los detalles de cada venta.
+ *
  * @author Luis Chavez Bustamante
  */
 public class CreateSaleDetailsTable implements Migration {
 
     /**
      * Se crea la estructura de la tabla.
-     * 
+     *
      * @param database instancia de la base de datos.
      */
     @Override
     public void up(Database database) {
-        database.create(DatabaseConstants.SALE_DETAILS_TABLE_NAME, (table) -> {
-            table.integer("sale_detail_id").unsigned().incremented();
-            table.string("name", 128);
-            table.decimal("price", 8, 2);
-            table.integer("quantity").unsigned();
-            table.integer("sale_id").unsigned();
-            
-            table.primary("sale_detail_id");
-            table.foreign("sale_id", 
-                    DatabaseConstants.SALES_TABLE_NAME, "sale_id", 
+        database.create(SALE_DETAILS_TABLE_NAME, (table) -> {
+            table.integer(SALE_DETAILS_PRIMARY_KEY).unsigned().incremented();
+            table.string(SALE_DETAILS_NAME, SALE_DETAILS_NAME_SIZE);
+            table.decimal(SALE_DETAILS_PRICE,
+                    SALE_DETAILS_PRICE_SIZE, SALE_DETAILS_PRICE_ZEROS);
+            table.integer(SALE_DETAILS_QUANTITY).unsigned();
+            table.integer(SALE_DETAILS_SALE).unsigned();
+
+            table.primary(SALE_DETAILS_PRIMARY_KEY);
+            table.foreign(SALE_DETAILS_SALE,
+                    SALES_TABLE_NAME, SALES_PRIMARY_KEY,
                     "CASCADE", "CASCADE");
         });
     }
 
     /**
      * Se elimina la tabla de la base de datos.
-     * 
+     *
      * @param database instancia de la base de datos.
      */
     @Override
     public void down(Database database) {
-        database.drop(DatabaseConstants.SALE_DETAILS_TABLE_NAME);
+        database.drop(SALE_DETAILS_TABLE_NAME);
     }
 }
