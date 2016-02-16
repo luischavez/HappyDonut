@@ -19,6 +19,8 @@ package com.geometrycloud.happydonut.swing;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JTextField;
+
 /**
  * Clase encargada de registrar los distintos accesores de la aplicacion.
  *
@@ -30,6 +32,11 @@ public abstract class Accesor<T, V> {
 
     // Contiene todos los accesores de la aplicacion.
     private static final Map<Class<?>, Accesor> ACCESORS = new HashMap<>();
+
+    // Carga los accesores por defecto al cargar la clase.
+    static {
+        registerDefaults();
+    }
 
     /**
      * Establece el valor del objeto.
@@ -72,5 +79,12 @@ public abstract class Accesor<T, V> {
      */
     public static <T, V> void register(Class<T> clazz, Accesor<T, V> accesor) {
         ACCESORS.put(clazz, accesor);
+    }
+
+    /**
+     * Registra los accesores por defecto.
+     */
+    public static void registerDefaults() {
+        register(JTextField.class, new JTextFieldAccesor());
     }
 }
