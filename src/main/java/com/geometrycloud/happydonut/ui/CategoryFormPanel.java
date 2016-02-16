@@ -94,6 +94,8 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
         setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();
+        
+        constraints.insets.set(5, 5, 5, 5);
 
         constraints.gridx = 1;
         constraints.gridy = 0;
