@@ -33,6 +33,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
+import com.geometrycloud.happydonut.swing.JTableButton;
+import javax.swing.AbstractAction;
 
 /**
  * Panel para la admninistracion de los modelos.
@@ -93,9 +95,25 @@ public class ModelPanel extends JPanel implements ActionListener {
                 = new DatabaseTableModel(
                         Context.DATABASE.table(tableName),
                         displayFields);
+        model.setExtra(new String[]{"edit", "delete"});
         model.loadData();
 
         table.setModel(model);
+
+        table.getTableHeader().setReorderingAllowed(false);
+
+        JTableButton.apply(table, new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        }, model.indexOfExtra(1));
+        JTableButton.apply(table, new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        }, model.indexOfExtra(2));
 
         setLayout(new GridBagLayout());
 

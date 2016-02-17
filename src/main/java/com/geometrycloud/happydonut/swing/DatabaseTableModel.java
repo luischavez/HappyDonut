@@ -35,6 +35,9 @@ public class DatabaseTableModel extends DefaultTableModel {
     // Campos a mostrar.
     private String[] displayFields;
 
+    // Campos adicionales.
+    private String[] extra = null;
+
     // Resultados de la consulta.
     private RowList rows = null;
 
@@ -92,6 +95,34 @@ public class DatabaseTableModel extends DefaultTableModel {
     }
 
     /**
+     * Obtiene los campos adicionales.
+     *
+     * @return campos adicionales.
+     */
+    public String[] getExtra() {
+        return extra;
+    }
+
+    /**
+     * Establece los campos adicionales.
+     *
+     * @param extra campos adicionales.
+     */
+    public void setExtra(String[] extra) {
+        this.extra = extra;
+    }
+
+    /**
+     * Obtiene el indice donde comienzan las columnas adicionales.
+     *
+     * @param i indice de la columna.
+     * @return indice de las columnas adicionales.
+     */
+    public int indexOfExtra(int i) {
+        return displayFields.length - 1 + i;
+    }
+
+    /**
      * Carga la informacion de la base de datos.
      */
     public void loadData() {
@@ -115,21 +146,40 @@ public class DatabaseTableModel extends DefaultTableModel {
 
     @Override
     public int getColumnCount() {
-        return null != displayFields ? displayFields.length : 0;
+        return null != displayFields ? displayFields.length
+                + (null != extra ? extra.length : 0) : 0;
     }
 
     @Override
     public String getColumnName(int column) {
+        if (displayFields.length <= column) {
+            return "";
+        }
         return displayFields[column];
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
+        if (displayFields.length <= columnIndex) {
+            return String.class;
+        }
         return row(0).value(getColumnName(columnIndex)).getClass();
     }
 
     @Override
+    public boolean isCellEditable(int row, int column) {
+        return displayFields.length <= column;
+    }
+
+    @Override
     public Object getValueAt(int row, int column) {
+        if (displayFields.length <= column) {
+            return extra[column - displayFields.length];
+        }
         return row(row).value(getColumnName(column));
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int row, int column) {
     }
 }
