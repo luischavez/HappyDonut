@@ -22,12 +22,18 @@ import com.github.luischavez.database.Database;
 import com.github.luischavez.database.configuration.ProjectSource;
 import com.github.luischavez.database.configuration.XMLBuilder;
 
+import java.util.ResourceBundle;
+
 /**
  * Representa al estado actual del programa en ejecucion.
  *
  * @author Luis Chávez Bustamante
  */
 public final class Context {
+
+    // Mensajes por defecto.
+    public static final ResourceBundle messages
+            = ResourceBundle.getBundle("lang/messages");
 
     // Conexion con la base de datos.
     public static final Database DATABASE;
@@ -39,5 +45,19 @@ public final class Context {
         DATABASE = Database.use(DatabaseConstants.DATABASE_NAME);
         DATABASE.open();
         DATABASE.migrate();
+    }
+
+    /**
+     * Obtiene un mensaje desde el archivo apropiado si existe, de otra manera
+     * retorna la llave.
+     *
+     * @param key llave.
+     * @return mensaje o llave si el mensaje no existe.
+     */
+    public static String message(String key) {
+        if (messages.containsKey(key)) {
+            return messages.getString(key);
+        }
+        return key;
     }
 }

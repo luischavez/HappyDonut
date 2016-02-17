@@ -103,4 +103,17 @@ public class UiUtils {
     public static void warning(String title, Object message, JComponent parent) {
         JOptionPane.showMessageDialog(parent, message, title, JOptionPane.WARNING_MESSAGE);
     }
+
+    /**
+     * Muestra un dialogo de confirmacion.
+     *
+     * @param parent componente padre.
+     * @return true si acepto, false si no.
+     */
+    public static boolean confirm(JComponent parent) {
+        int option = JOptionPane.showConfirmDialog(parent,
+                "Desea continuar?", "",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        return JOptionPane.OK_OPTION == option;
+    }
 }

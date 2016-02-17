@@ -37,6 +37,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import static com.geometrycloud.happydonut.Context.*;
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 
 /**
@@ -52,17 +53,17 @@ public class ProductFormPanel extends FormPanel implements ActionListener {
     public static final int IMAGE_HEIGHT = 240;
 
     // Etiquetas.
-    private final JLabel nameLabel = new JLabel("Nombre");
-    private final JLabel descriptionLabel = new JLabel("Descripcion");
-    private final JLabel ingredientsLabel = new JLabel("Ingredientes");
-    private final JLabel priceLabel = new JLabel("Precio");
-    private final JLabel stockLabel = new JLabel("Existencia");
-    private final JLabel categoryLabel = new JLabel("Categoria");
+    private final JLabel nameLabel = new JLabel(message("name"));
+    private final JLabel descriptionLabel = new JLabel(message("description"));
+    private final JLabel ingredientsLabel = new JLabel(message("ingredients"));
+    private final JLabel priceLabel = new JLabel(message("price"));
+    private final JLabel stockLabel = new JLabel(message("stock"));
+    private final JLabel categoryLabel = new JLabel(message("category"));
 
     // Campo para la imagen.
     @Fillable(name = PRODUCTS_IMAGE)
     private final ImagePanel image = new ImagePanel();
-    private final JButton searchImageButton = new JButton("Buscar..");
+    private final JButton searchImageButton = new JButton(message("search"));
 
     // Campo para el nombre.
     @Fillable(name = PRODUCTS_NAME)
@@ -231,8 +232,9 @@ public class ProductFormPanel extends FormPanel implements ActionListener {
                 if (IMAGE_WIDTH < image.getImage().getWidth()
                         || IMAGE_HEIGHT < image.getImage().getHeight()) {
                     image.setBytes(null);
-                    UiUtils.warning("No se pudo cargar la imagen",
-                            "la imagen es muy grande", this);
+                    UiUtils.warning(
+                            message("warning.title"),
+                            message("warning.image"), this);
                 }
             }
         }

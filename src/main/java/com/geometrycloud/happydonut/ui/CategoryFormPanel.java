@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AbstractDocument;
 
+import static com.geometrycloud.happydonut.Context.*;
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 
 /**
@@ -55,10 +56,10 @@ public class CategoryFormPanel extends FormPanel implements ActionListener {
     /*
      * Etiquetas.
      */
-    private final JLabel nameLabel = new JLabel("Nombre");
+    private final JLabel nameLabel = new JLabel(message("add"));
 
     // Boton para la busqueda de imagenes.
-    private final JButton searchImageButton = new JButton("Buscar..");
+    private final JButton searchImageButton = new JButton(message("search"));
 
     // Campo imagen.
     @Fillable(name = CATEGORIES_IMAGE)
@@ -139,8 +140,9 @@ public class CategoryFormPanel extends FormPanel implements ActionListener {
                 if (IMAGE_WIDTH < image.getImage().getWidth()
                         || IMAGE_HEIGHT < image.getImage().getHeight()) {
                     image.setBytes(null);
-                    UiUtils.warning("No se pudo cargar la imagen",
-                            "la imagen es muy grande", this);
+                    UiUtils.warning(
+                            message("warning.title"),
+                            message("warning.image"), this);
                 }
             }
         }

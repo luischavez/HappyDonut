@@ -16,6 +16,8 @@
  */
 package com.geometrycloud.happydonut.swing;
 
+import com.geometrycloud.happydonut.Context;
+
 import com.github.luischavez.database.link.Row;
 import com.github.luischavez.database.link.RowList;
 import com.github.luischavez.database.query.Query;
@@ -139,6 +141,19 @@ public class DatabaseTableModel extends DefaultTableModel {
         return rows.getRow(index);
     }
 
+    /**
+     * Obtiene el nombre original de la columna.
+     *
+     * @param column indice de la columna.
+     * @return nombre original.
+     */
+    public String getOriginalColumnName(int column) {
+        if (displayFields.length <= column) {
+            return "";
+        }
+        return displayFields[column];
+    }
+
     @Override
     public int getRowCount() {
         return null != rows ? rows.size() : 0;
@@ -155,7 +170,7 @@ public class DatabaseTableModel extends DefaultTableModel {
         if (displayFields.length <= column) {
             return "";
         }
-        return displayFields[column];
+        return Context.message(displayFields[column]);
     }
 
     @Override
@@ -163,7 +178,7 @@ public class DatabaseTableModel extends DefaultTableModel {
         if (displayFields.length <= columnIndex) {
             return String.class;
         }
-        return row(0).value(getColumnName(columnIndex)).getClass();
+        return row(0).value(getOriginalColumnName(columnIndex)).getClass();
     }
 
     @Override
@@ -176,7 +191,7 @@ public class DatabaseTableModel extends DefaultTableModel {
         if (displayFields.length <= column) {
             return extra[column - displayFields.length];
         }
-        return row(row).value(getColumnName(column));
+        return row(row).value(getOriginalColumnName(column));
     }
 
     @Override

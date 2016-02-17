@@ -16,7 +16,6 @@
  */
 package com.geometrycloud.happydonut.ui;
 
-import com.geometrycloud.happydonut.Context;
 import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.swing.DatabaseTableModel;
 import com.geometrycloud.happydonut.swing.FormPanel;
@@ -38,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import static com.geometrycloud.happydonut.Context.*;
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 
 /**
@@ -49,6 +49,9 @@ public class ModelPanel extends JPanel implements ActionListener {
 
     // Nombre de la tabla en la base de datos.
     private final String tableName;
+
+    // Nombre de la llave primaria.
+    private final String primaryKeyName;
 
     // Campos a mostrar en la tabla.
     private final String[] displayFields;
@@ -63,7 +66,7 @@ public class ModelPanel extends JPanel implements ActionListener {
      * Etiquetas.
      */
     // Boton para agregar un nuevo modelo.
-    private final JButton addButton = new JButton("Agregar");
+    private final JButton addButton = new JButton(message("add"));
 
     // Tabla donde se listan los modelos.
     private final JTable table = new JTable();
@@ -78,14 +81,16 @@ public class ModelPanel extends JPanel implements ActionListener {
      * Constructor principal.
      *
      * @param tableName nombre de la tabla.
+     * @param primaryKeyName nombre de la llave primaria.
      * @param displayFields campos a mostrar.
      * @param requiredFields campos requeridos.
      * @param formPanelClass clase del formulario.
      */
-    public ModelPanel(String tableName,
+    public ModelPanel(String tableName, String primaryKeyName,
             String[] displayFields, String[] requiredFields,
             Class<? extends FormPanel> formPanelClass) {
         this.tableName = tableName;
+        this.primaryKeyName = primaryKeyName;
         this.displayFields = displayFields;
         this.requiredFields = requiredFields;
         this.formPanelClass = formPanelClass;
@@ -99,9 +104,10 @@ public class ModelPanel extends JPanel implements ActionListener {
         addButton.addActionListener(this);
 
         model = new DatabaseTableModel(
-                Context.DATABASE.table(tableName),
+                DATABASE.table(tableName),
                 displayFields);
-        model.setExtra(new String[]{"Editar", "Eliminar"});
+        model.setExtra(new String[]{
+            message("edit"), message("delete")});
         model.loadData();
 
         table.setModel(model);
@@ -117,10 +123,10 @@ public class ModelPanel extends JPanel implements ActionListener {
                 FormPanel form = createForm();
                 form.fill(DatabaseUtils.toMap(row));
                 Map<String, Object> map
-                        = UiUtils.form("Editar", form,
+                        = UiUtils.form(message("edit"), form,
                                 ModelPanel.this, requiredFields);
                 if (null != map) {
-                    Context.DATABASE.update(tableName,
+                    DATABASE.update(tableName,
                             DatabaseUtils.columns(map),
                             DatabaseUtils.values(map));
                     model.loadData();
@@ -132,6 +138,15 @@ public class ModelPanel extends JPanel implements ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                int rowIndex = Integer.valueOf(e.getActionCommand());
+                if (UiUtils.confirm(ModelPanel.this)) {
+                    Row row = model.row(rowIndex);
+                    DATABASE.where(primaryKeyName,
+                            "=", row.value(primaryKeyName))
+                            .delete(tableName);
+                    model.loadData();
+                    UiUtils.repaint(table);
+                }
             }
         }, model.indexOfExtra(2));
 
@@ -172,9 +187,9 @@ public class ModelPanel extends JPanel implements ActionListener {
         if (addButton == e.getSource()) {
             FormPanel form = createForm();
             Map<String, Object> map
-                    = UiUtils.form("Agregar", form, this, requiredFields);
+                    = UiUtils.form(message("add"), form, this, requiredFields);
             if (null != map) {
-                Context.DATABASE.insert(tableName,
+                DATABASE.insert(tableName,
                         DatabaseUtils.columns(map),
                         DatabaseUtils.values(map));
                 model.loadData();
@@ -186,7 +201,7 @@ public class ModelPanel extends JPanel implements ActionListener {
     public static void main(String... args) {
         Main.loadLookAndFeel();
         UiUtils.launch("Model Panel",
-                new ModelPanel(CATEGORIES_TABLE_NAME,
+                new ModelPanel(CATEGORIES_TABLE_NAME, CATEGORIES_PRIMARY_KEY,
                         CATEGORIES_DISPLAY_FIELDS, CATEGORIES_REQUIRED_FIELDS,
                         CategoryFormPanel.class));
     }
