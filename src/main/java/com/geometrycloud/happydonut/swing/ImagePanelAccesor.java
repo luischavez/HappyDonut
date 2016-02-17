@@ -16,6 +16,8 @@
  */
 package com.geometrycloud.happydonut.swing;
 
+import java.nio.ByteBuffer;
+
 /**
  * Accesor para manejar imagenes.
  *
@@ -31,5 +33,13 @@ public class ImagePanelAccesor extends Accesor<ImagePanel, byte[]> {
     @Override
     public void set(ImagePanel object, byte[] value) {
         object.setBytes(value);
+    }
+
+    @Override
+    public Object cast(Object object) {
+        if (object instanceof ByteBuffer) {
+            return ByteBuffer.class.cast(object).array();
+        }
+        return super.cast(object);
     }
 }

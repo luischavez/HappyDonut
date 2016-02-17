@@ -55,6 +55,16 @@ public abstract class Accesor<T, V> {
     public abstract V get(T object);
 
     /**
+     * Transforma un objeto en el valor apropiado.
+     *
+     * @param object objeto.
+     * @return objeto transformado.
+     */
+    public Object cast(Object object) {
+        return object;
+    }
+
+    /**
      * Obtiene el accesor de la clase especificada.
      *
      * @param <T> tipo de objeto a accesar.

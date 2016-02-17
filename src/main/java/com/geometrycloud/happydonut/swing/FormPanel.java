@@ -101,7 +101,7 @@ public class FormPanel extends JPanel {
             if (null == accesor) {
                 throw new InvalidFieldException("invalid accesor for field");
             }
-            accesor.set(fieldValue, value);
+            accesor.set(fieldValue, accesor.cast(value));
         } catch (IllegalArgumentException | IllegalAccessException ex) {
             throw new InvalidFieldException("cant set field value", ex);
         }

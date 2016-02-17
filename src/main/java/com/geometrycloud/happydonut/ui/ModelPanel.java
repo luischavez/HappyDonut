@@ -20,21 +20,25 @@ import com.geometrycloud.happydonut.Context;
 import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.swing.DatabaseTableModel;
 import com.geometrycloud.happydonut.swing.FormPanel;
+import com.geometrycloud.happydonut.swing.JTableButton;
+import com.geometrycloud.happydonut.util.DatabaseUtils;
 import com.geometrycloud.happydonut.util.UiUtils;
+
+import com.github.luischavez.database.link.Row;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
-import com.geometrycloud.happydonut.swing.JTableButton;
-import javax.swing.AbstractAction;
 
 /**
  * Panel para la admninistracion de los modelos.
@@ -67,6 +71,9 @@ public class ModelPanel extends JPanel implements ActionListener {
     // Scroll para la tabla de modelos.
     private final JScrollPane scroll = new JScrollPane(table);
 
+    // Modelo de la tabla.
+    private DatabaseTableModel model = null;
+
     /**
      * Constructor principal.
      *
@@ -91,11 +98,10 @@ public class ModelPanel extends JPanel implements ActionListener {
     private void initComponents() {
         addButton.addActionListener(this);
 
-        DatabaseTableModel model
-                = new DatabaseTableModel(
-                        Context.DATABASE.table(tableName),
-                        displayFields);
-        model.setExtra(new String[]{"edit", "delete"});
+        model = new DatabaseTableModel(
+                Context.DATABASE.table(tableName),
+                displayFields);
+        model.setExtra(new String[]{"Editar", "Eliminar"});
         model.loadData();
 
         table.setModel(model);
@@ -106,6 +112,20 @@ public class ModelPanel extends JPanel implements ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                int rowIndex = Integer.valueOf(e.getActionCommand());
+                Row row = model.row(rowIndex);
+                FormPanel form = createForm();
+                form.fill(DatabaseUtils.toMap(row));
+                Map<String, Object> map
+                        = UiUtils.form("Editar", form,
+                                ModelPanel.this, requiredFields);
+                if (null != map) {
+                    Context.DATABASE.update(tableName,
+                            DatabaseUtils.columns(map),
+                            DatabaseUtils.values(map));
+                    model.loadData();
+                    UiUtils.repaint(table);
+                }
             }
         }, model.indexOfExtra(1));
         JTableButton.apply(table, new AbstractAction() {
@@ -151,7 +171,15 @@ public class ModelPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (addButton == e.getSource()) {
             FormPanel form = createForm();
-            UiUtils.form("Agregar", form, this, requiredFields);
+            Map<String, Object> map
+                    = UiUtils.form("Agregar", form, this, requiredFields);
+            if (null != map) {
+                Context.DATABASE.insert(tableName,
+                        DatabaseUtils.columns(map),
+                        DatabaseUtils.values(map));
+                model.loadData();
+                UiUtils.repaint(table);
+            }
         }
     }
 

@@ -20,6 +20,7 @@ import com.github.luischavez.database.link.Row;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Funciones de utilidad para la base de datos.
@@ -40,5 +41,28 @@ public class DatabaseUtils {
             map.put(key, row.value(key));
         }
         return map;
+    }
+
+    /**
+     * Obtiene los nombres de las llaves de un mapa en una cadena separada por
+     * comas.
+     *
+     * @param map mapa.
+     * @return cadena con las llaves separadas por comas.
+     */
+    public static String columns(Map<String, Object> map) {
+        return map.keySet()
+                .stream()
+                .collect(Collectors.joining(","));
+    }
+
+    /**
+     * Obtiene los valores de un mapa en un arreglo.
+     *
+     * @param map mapa.
+     * @return arreglo con los valores.
+     */
+    public static Object[] values(Map<String, Object> map) {
+        return map.values().toArray();
     }
 }
