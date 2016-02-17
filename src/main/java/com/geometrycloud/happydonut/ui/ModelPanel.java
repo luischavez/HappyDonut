@@ -23,19 +23,25 @@ import com.geometrycloud.happydonut.swing.JTableButton;
 import com.geometrycloud.happydonut.util.DatabaseUtils;
 import com.geometrycloud.happydonut.util.UiUtils;
 
+import com.github.luischavez.database.query.Query;
 import com.github.luischavez.database.link.Row;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 import static com.geometrycloud.happydonut.Context.*;
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
@@ -45,7 +51,7 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  *
  * @author Luis Chávez Bustamante
  */
-public class ModelPanel extends JPanel implements ActionListener {
+public class ModelPanel extends JPanel implements ActionListener, KeyListener {
 
     // Nombre de la tabla en la base de datos.
     private final String tableName;
@@ -65,8 +71,16 @@ public class ModelPanel extends JPanel implements ActionListener {
     /*
      * Etiquetas.
      */
+    private final JLabel filterLabel = new JLabel(message("filter"));
+
     // Boton para agregar un nuevo modelo.
     private final JButton addButton = new JButton(message("add"));
+
+    // Listado de columnas a filtrar.
+    private final JComboBox<String> filterColumn = new JComboBox<>();
+
+    // Campo de texto para filtrar los resultados.
+    private final JTextField filter = new JTextField();
 
     // Tabla donde se listan los modelos.
     private final JTable table = new JTable();
@@ -101,7 +115,12 @@ public class ModelPanel extends JPanel implements ActionListener {
      * Inicializa los componentes.
      */
     private void initComponents() {
+        filter.addKeyListener(this);
         addButton.addActionListener(this);
+
+        for (String displayField : displayFields) {
+            filterColumn.addItem(message(displayField));
+        }
 
         model = new DatabaseTableModel(
                 DATABASE.table(tableName),
@@ -141,8 +160,8 @@ public class ModelPanel extends JPanel implements ActionListener {
                 int rowIndex = Integer.valueOf(e.getActionCommand());
                 if (UiUtils.confirm(ModelPanel.this)) {
                     Row row = model.row(rowIndex);
-                    DATABASE.where(primaryKeyName,
-                            "=", row.value(primaryKeyName))
+                    DATABASE.where(primaryKeyName, "=",
+                            row.value(primaryKeyName))
                             .delete(tableName);
                     model.loadData();
                     UiUtils.repaint(table);
@@ -154,11 +173,38 @@ public class ModelPanel extends JPanel implements ActionListener {
 
         GridBagConstraints constraints = new GridBagConstraints();
 
+        constraints.insets.set(5, 5, 5, 5);
+
         constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
+        constraints.gridwidth = 1;
+        add(filterLabel, constraints);
+
+        constraints.gridx = 1;
         constraints.gridy = 0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1;
         constraints.weighty = 1;
+        constraints.gridwidth = 1;
+        add(filterColumn, constraints);
+
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = 1;
+        add(filter, constraints);
+
+        constraints.gridx = 3;
+        constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = 1;
         add(addButton, constraints);
 
         constraints.gridx = 0;
@@ -166,6 +212,7 @@ public class ModelPanel extends JPanel implements ActionListener {
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1;
         constraints.weighty = 1;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
         add(scroll, constraints);
     }
 
@@ -196,6 +243,29 @@ public class ModelPanel extends JPanel implements ActionListener {
                 UiUtils.repaint(table);
             }
         }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        String column = displayFields[filterColumn.getSelectedIndex()];
+        String find = filter.getText().toLowerCase();
+        Query query = DATABASE.table(tableName);
+        if (!find.isEmpty()) {
+            query.where(
+                    String.format("lower(%s)", column), "like",
+                    String.format("%%%s%%", find));
+        }
+        model.setQuery(query);
+        model.loadData();
+        UiUtils.repaint(table);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
     }
 
     public static void main(String... args) {
