@@ -155,9 +155,11 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
                     if (timestamps) {
                         map.put("updated_at", LocalDateTime.now());
                     }
-                    DATABASE.update(tableName,
-                            DatabaseUtils.columns(map),
-                            DatabaseUtils.values(map));
+                    DATABASE.where(primaryKeyName, "=",
+                            row.value(primaryKeyName))
+                            .update(tableName,
+                                    DatabaseUtils.columns(map),
+                                    DatabaseUtils.values(map));
                     model.loadData();
                     UiUtils.repaint(table);
                 }
