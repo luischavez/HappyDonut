@@ -51,7 +51,7 @@ public class CreateProductsTable implements Migration {
 
             table.primary(PRODUCTS_PRIMARY_KEY);
             table.foreign(PRODUCTS_CATEGORY,
-                    CATEGORY_TABLE_NAME, CATEGORY_PRIMARY_KEY,
+                    CATEGORIES_TABLE_NAME, CATEGORIES_PRIMARY_KEY,
                     "CASCADE", "CASCADE");
         });
     }

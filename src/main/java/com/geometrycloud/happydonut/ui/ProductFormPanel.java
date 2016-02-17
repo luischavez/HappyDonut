@@ -21,7 +21,7 @@ import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.swing.DatabaseComboBox;
 import com.geometrycloud.happydonut.swing.DatabaseComboBoxModel;
 import com.geometrycloud.happydonut.swing.Fillable;
-import com.geometrycloud.happydonut.swing.FillablePanel;
+import com.geometrycloud.happydonut.swing.FormPanel;
 import com.geometrycloud.happydonut.swing.ImagePanel;
 import com.geometrycloud.happydonut.util.UiUtils;
 
@@ -44,7 +44,7 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  *
  * @author Luis Chávez Bustamante
  */
-public class ProductFormPanel extends FillablePanel implements ActionListener {
+public class ProductFormPanel extends FormPanel implements ActionListener {
 
     // Ancho de la imagen.
     public static final int IMAGE_WIDTH = 240;
@@ -103,8 +103,8 @@ public class ProductFormPanel extends FillablePanel implements ActionListener {
         searchImageButton.addActionListener(this);
 
         DatabaseComboBoxModel model
-                = new DatabaseComboBoxModel(CATEGORY_PRIMARY_KEY, CATEGORY_NAME,
-                        Context.DATABASE.table(CATEGORY_TABLE_NAME));
+                = new DatabaseComboBoxModel(CATEGORIES_PRIMARY_KEY, CATEGORIES_NAME,
+                        Context.DATABASE.table(CATEGORIES_TABLE_NAME));
         model.loadData();
 
         category.setModel(model);
@@ -241,8 +241,6 @@ public class ProductFormPanel extends FillablePanel implements ActionListener {
     public static void main(String... args) {
         Main.loadLookAndFeel();
         ProductFormPanel form = new ProductFormPanel();
-        UiUtils.form("Product form", form, null,
-                PRODUCTS_IMAGE, PRODUCTS_NAME, PRODUCTS_INGREDIENTS,
-                PRODUCTS_PRICE, PRODUCTS_STOCK, PRODUCTS_CATEGORY);
+        UiUtils.form("Product form", form, null, PRODUCTS_REQUIRED_FIELDS);
     }
 }

@@ -19,7 +19,7 @@ package com.geometrycloud.happydonut.ui;
 import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.filter.MaxSizeFilter;
 import com.geometrycloud.happydonut.swing.Fillable;
-import com.geometrycloud.happydonut.swing.FillablePanel;
+import com.geometrycloud.happydonut.swing.FormPanel;
 import com.geometrycloud.happydonut.swing.ImagePanel;
 import com.geometrycloud.happydonut.util.UiUtils;
 
@@ -44,7 +44,7 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  *
  * @author Luis Chavez Bustamante
  */
-public class CategoryFormPanel extends FillablePanel implements ActionListener {
+public class CategoryFormPanel extends FormPanel implements ActionListener {
 
     // Ancho de la imagen.
     public static final int IMAGE_WIDTH = 240;
@@ -61,11 +61,11 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
     private final JButton searchImageButton = new JButton("Buscar..");
 
     // Campo imagen.
-    @Fillable(name = CATEGORY_IMAGE)
+    @Fillable(name = CATEGORIES_IMAGE)
     private final ImagePanel image = new ImagePanel();
 
     // Campo nombre.
-    @Fillable(name = CATEGORY_NAME)
+    @Fillable(name = CATEGORIES_NAME)
     private final JTextField name = new JTextField();
 
     /**
@@ -149,7 +149,6 @@ public class CategoryFormPanel extends FillablePanel implements ActionListener {
     public static void main(String... args) {
         Main.loadLookAndFeel();
         CategoryFormPanel form = new CategoryFormPanel();
-        UiUtils.form("Category Form", form, null,
-                CATEGORY_IMAGE, CATEGORY_NAME);
+        UiUtils.form("Category Form", form, null, CATEGORIES_REQUIRED_FIELDS);
     }
 }

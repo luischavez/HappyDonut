@@ -78,7 +78,7 @@ public class CategoryTest {
      */
     @Test
     public void testConnection() {
-        boolean exist = database.exists(DatabaseConstants.CATEGORY_TABLE_NAME);
+        boolean exist = database.exists(DatabaseConstants.CATEGORIES_TABLE_NAME);
         assertTrue(exist);
     }
 
@@ -88,7 +88,7 @@ public class CategoryTest {
     @Test
     public void testCategoryInsert() {
         Affecting insert = database
-                .insert(DatabaseConstants.CATEGORY_TABLE_NAME, "name", "test");
+                .insert(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "test");
         assertTrue(insert.success());
     }
 
@@ -98,10 +98,10 @@ public class CategoryTest {
     @Test
     public void testCategoryUpdate() {
         Affecting insert = database
-                .insert(DatabaseConstants.CATEGORY_TABLE_NAME, "name", "test");
+                .insert(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "test");
         Object id = insert.getGeneratedKeys()[0];
         Affecting update = database.where("category_id", "=", id)
-                .update(DatabaseConstants.CATEGORY_TABLE_NAME, "name", "other");
+                .update(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "other");
         assertTrue(update.success());
     }
 
@@ -111,10 +111,10 @@ public class CategoryTest {
     @Test
     public void testCategoryDelete() {
         Affecting insert = database
-                .insert(DatabaseConstants.CATEGORY_TABLE_NAME, "name", "test");
+                .insert(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "test");
         Object id = insert.getGeneratedKeys()[0];
         Affecting delete = database.where("category_id", "=", id)
-                .delete(DatabaseConstants.CATEGORY_TABLE_NAME);
+                .delete(DatabaseConstants.CATEGORIES_TABLE_NAME);
         assertTrue(delete.success());
     }
 
@@ -123,8 +123,8 @@ public class CategoryTest {
      */
     @Test
     public void testCategoryQuery() {
-        database.insert(DatabaseConstants.CATEGORY_TABLE_NAME, "name", "test");
-        RowList rows = database.table(DatabaseConstants.CATEGORY_TABLE_NAME).get();
+        database.insert(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "test");
+        RowList rows = database.table(DatabaseConstants.CATEGORIES_TABLE_NAME).get();
         assertTrue(0 < rows.size());
     }
 }

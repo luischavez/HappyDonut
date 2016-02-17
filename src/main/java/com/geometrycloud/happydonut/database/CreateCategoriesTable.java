@@ -36,12 +36,12 @@ public class CreateCategoriesTable implements Migration {
      */
     @Override
     public void up(Database database) {
-        database.create(CATEGORY_TABLE_NAME, (table) -> {
-            table.integer(CATEGORY_PRIMARY_KEY).unsigned().incremented();
-            table.string(CATEGORY_NAME, CATEGORY_NAME_SIZE);
-            table.binary(CATEGORY_IMAGE);
+        database.create(CATEGORIES_TABLE_NAME, (table) -> {
+            table.integer(CATEGORIES_PRIMARY_KEY).unsigned().incremented();
+            table.string(CATEGORIES_NAME, CATEGORY_NAME_SIZE);
+            table.binary(CATEGORIES_IMAGE);
 
-            table.primary(CATEGORY_PRIMARY_KEY);
+            table.primary(CATEGORIES_PRIMARY_KEY);
         });
     }
 
@@ -52,6 +52,6 @@ public class CreateCategoriesTable implements Migration {
      */
     @Override
     public void down(Database database) {
-        database.drop(CATEGORY_TABLE_NAME);
+        database.drop(CATEGORIES_TABLE_NAME);
     }
 }

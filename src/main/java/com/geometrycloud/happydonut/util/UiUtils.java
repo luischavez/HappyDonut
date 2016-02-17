@@ -16,7 +16,7 @@
  */
 package com.geometrycloud.happydonut.util;
 
-import com.geometrycloud.happydonut.swing.FillablePanel;
+import com.geometrycloud.happydonut.swing.FormPanel;
 
 import java.awt.EventQueue;
 import java.util.Map;
@@ -58,7 +58,7 @@ public class UiUtils {
      * @param required campos obligatorios.
      * @return mapa con la informacion del formulario o null si se cancela.
      */
-    public static Map<String, Object> form(String title, FillablePanel form,
+    public static Map<String, Object> form(String title, FormPanel form,
             JComponent parent, String... required) {
         int option = JOptionPane.showConfirmDialog(parent, form, title,
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);

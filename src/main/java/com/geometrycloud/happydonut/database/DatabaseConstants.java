@@ -43,13 +43,23 @@ public class DatabaseConstants {
     public static final int PROVIDERS_PHONE_SIZE = 32;
     public static final int PROVIDERS_EMAIL_SIZE = 128;
 
+    public static final String[] PROVIDERS_REQUIRED_FIELDS = {
+        PROVIDERS_FIRST_NAME, PROVIDERS_LAST_NAME,
+        PROVIDERS_PHONE, PROVIDERS_EMAIL,
+        PROVIDERS_INGREDIENTS
+    };
+
     // Definicion de la tabla de categorias.
-    public static final String CATEGORY_TABLE_NAME = "categories";
-    public static final String CATEGORY_PRIMARY_KEY = "category_id";
-    public static final String CATEGORY_IMAGE = "image";
-    public static final String CATEGORY_NAME = "name";
+    public static final String CATEGORIES_TABLE_NAME = "categories";
+    public static final String CATEGORIES_PRIMARY_KEY = "category_id";
+    public static final String CATEGORIES_IMAGE = "image";
+    public static final String CATEGORIES_NAME = "name";
 
     public static final int CATEGORY_NAME_SIZE = 128;
+
+    public static final String[] CATEGORIES_REQUIRED_FIELDS = {
+        CATEGORIES_IMAGE, CATEGORIES_NAME
+    };
 
     // Definicion de la tabla de productos.
     public static final String PRODUCTS_TABLE_NAME = "products";
@@ -68,6 +78,12 @@ public class DatabaseConstants {
     public static final int PRODUCTS_PRICE_SIZE = 8;
     public static final int PRODUCTS_PRICE_ZEROS = 2;
 
+    public static final String[] PRODUCTS_REQUIRED_FIELDS = {
+        PRODUCTS_NAME, PRODUCTS_INGREDIENTS,
+        PRODUCTS_PRICE, PRODUCTS_STOCK,
+        PRODUCTS_IMAGE, PRODUCTS_CATEGORY
+    };
+
     // Definicion de la tabla de ventas.
     public static final String SALES_TABLE_NAME = "sales";
     public static final String SALES_PRIMARY_KEY = "sale_id";
@@ -80,8 +96,13 @@ public class DatabaseConstants {
     public static final String SALE_DETAILS_PRICE = "price";
     public static final String SALE_DETAILS_QUANTITY = "quantity";
     public static final String SALE_DETAILS_SALE = "sale_id";
-    
+
     public static final int SALE_DETAILS_NAME_SIZE = 128;
     public static final int SALE_DETAILS_PRICE_SIZE = 8;
     public static final int SALE_DETAILS_PRICE_ZEROS = 2;
+
+    public static final String[] SALE_DETAILS_REQUIRED_FIELDS = {
+        SALE_DETAILS_NAME, SALE_DETAILS_PRICE,
+        SALE_DETAILS_QUANTITY, SALE_DETAILS_SALE
+    };
 }

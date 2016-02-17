@@ -30,7 +30,7 @@ import javax.swing.JPanel;
  *
  * @author Luis Chavez Bustamante
  */
-public class FillablePanel extends JPanel {
+public class FormPanel extends JPanel {
 
     /**
      * Obtiene los campos con la anotacion Fillable.
