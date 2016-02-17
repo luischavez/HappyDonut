@@ -32,6 +32,17 @@ public class DatabaseComboBoxAccesor
     @Override
     public void set(DatabaseComboBox object,
             DatabaseComboBoxModel.Item value) {
-        object.setSelectedItem(value);
+        int count = object.getItemCount();
+        for (int i = 0; i < count; i++) {
+            DatabaseComboBoxModel.Item item = object.getItemAt(i);
+            if (item.id.equals(value.id)) {
+                object.setSelectedIndex(i);
+            }
+        }
+    }
+
+    @Override
+    public Object cast(Object object) {
+        return new DatabaseComboBoxModel.Item(object, null, null);
     }
 }

@@ -123,7 +123,7 @@ public class DatabaseComboBoxModel
     /**
      * Representa un objeto de la base de datos.
      */
-    public class Item {
+    public static class Item {
 
         // Identificador.
         public final Object id;

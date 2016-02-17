@@ -32,6 +32,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -68,6 +69,9 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
     // Clase del formulario del modelo.
     private final Class<? extends FormPanel> formPanelClass;
 
+    // Indica si el formulario agregara los campos de created_at y updated_at.
+    private final boolean timestamps;
+
     /*
      * Etiquetas.
      */
@@ -99,15 +103,18 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
      * @param displayFields campos a mostrar.
      * @param requiredFields campos requeridos.
      * @param formPanelClass clase del formulario.
+     * @param timestamps indica si se usaran campos de fecha.
      */
     public ModelPanel(String tableName, String primaryKeyName,
             String[] displayFields, String[] requiredFields,
-            Class<? extends FormPanel> formPanelClass) {
+            Class<? extends FormPanel> formPanelClass,
+            boolean timestamps) {
         this.tableName = tableName;
         this.primaryKeyName = primaryKeyName;
         this.displayFields = displayFields;
         this.requiredFields = requiredFields;
         this.formPanelClass = formPanelClass;
+        this.timestamps = timestamps;
         initComponents();
     }
 
@@ -145,6 +152,9 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
                         = UiUtils.form(message("edit"), form,
                                 ModelPanel.this, requiredFields);
                 if (null != map) {
+                    if (timestamps) {
+                        map.put("updated_at", LocalDateTime.now());
+                    }
                     DATABASE.update(tableName,
                             DatabaseUtils.columns(map),
                             DatabaseUtils.values(map));
@@ -236,6 +246,10 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
             Map<String, Object> map
                     = UiUtils.form(message("add"), form, this, requiredFields);
             if (null != map) {
+                if (timestamps) {
+                    map.put("created_at", LocalDateTime.now());
+                    map.put("updated_at", map.get("created_at"));
+                }
                 DATABASE.insert(tableName,
                         DatabaseUtils.columns(map),
                         DatabaseUtils.values(map));
@@ -270,9 +284,17 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
 
     public static void main(String... args) {
         Main.loadLookAndFeel();
-        UiUtils.launch("Model Panel",
-                new ModelPanel(CATEGORIES_TABLE_NAME, CATEGORIES_PRIMARY_KEY,
-                        CATEGORIES_DISPLAY_FIELDS, CATEGORIES_REQUIRED_FIELDS,
-                        CategoryFormPanel.class));
+        boolean category = false;
+        if (category) {
+            UiUtils.launch("Model Panel",
+                    new ModelPanel(CATEGORIES_TABLE_NAME, CATEGORIES_PRIMARY_KEY,
+                            CATEGORIES_DISPLAY_FIELDS, CATEGORIES_REQUIRED_FIELDS,
+                            CategoryFormPanel.class, false));
+        } else {
+            UiUtils.launch("Model Panel",
+                    new ModelPanel(PRODUCTS_TABLE_NAME, PRODUCTS_PRIMARY_KEY,
+                            PRODUCTS_DISPLAY_FIELDS, PRODUCTS_REQUIRED_FIELDS,
+                            ProductFormPanel.class, true));
+        }
     }
 }

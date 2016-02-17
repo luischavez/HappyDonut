@@ -16,6 +16,8 @@
  */
 package com.geometrycloud.happydonut.util;
 
+import com.geometrycloud.happydonut.swing.DatabaseComboBoxModel;
+
 import com.github.luischavez.database.link.Row;
 
 import java.util.HashMap;
@@ -63,6 +65,12 @@ public class DatabaseUtils {
      * @return arreglo con los valores.
      */
     public static Object[] values(Map<String, Object> map) {
-        return map.values().toArray();
+        Object[] values = map.values().toArray();
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] instanceof DatabaseComboBoxModel.Item) {
+                values[i] = DatabaseComboBoxModel.Item.class.cast(values[i]).id;
+            }
+        }
+        return values;
     }
 }

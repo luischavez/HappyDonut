@@ -34,4 +34,9 @@ public class JTextFieldAccesor extends Accesor<JTextField, String> {
     public void set(JTextField object, String value) {
         object.setText(value);
     }
+
+    @Override
+    public Object cast(Object object) {
+        return object.toString();
+    }
 }
