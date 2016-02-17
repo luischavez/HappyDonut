@@ -16,7 +16,6 @@
  */
 package com.geometrycloud.happydonut.ui;
 
-import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.swing.DatabaseTableModel;
 import com.geometrycloud.happydonut.swing.FormPanel;
 import com.geometrycloud.happydonut.swing.JTableButton;
@@ -45,7 +44,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import static com.geometrycloud.happydonut.Context.*;
-import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 
 /**
  * Panel para la admninistracion de los modelos.
@@ -72,9 +70,7 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
     // Indica si el formulario agregara los campos de created_at y updated_at.
     private final boolean timestamps;
 
-    /*
-     * Etiquetas.
-     */
+    /* Etiquetas. */
     private final JLabel filterLabel = new JLabel(message("filter"));
 
     // Boton para agregar un nuevo modelo.
@@ -282,21 +278,5 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-    }
-
-    public static void main(String... args) {
-        Main.loadLookAndFeel();
-        boolean category = false;
-        if (category) {
-            UiUtils.launch("Model Panel",
-                    new ModelPanel(CATEGORIES_TABLE_NAME, CATEGORIES_PRIMARY_KEY,
-                            CATEGORIES_DISPLAY_FIELDS, CATEGORIES_REQUIRED_FIELDS,
-                            CategoryFormPanel.class, false));
-        } else {
-            UiUtils.launch("Model Panel",
-                    new ModelPanel(PRODUCTS_TABLE_NAME, PRODUCTS_PRIMARY_KEY,
-                            PRODUCTS_DISPLAY_FIELDS, PRODUCTS_REQUIRED_FIELDS,
-                            ProductFormPanel.class, true));
-        }
     }
 }

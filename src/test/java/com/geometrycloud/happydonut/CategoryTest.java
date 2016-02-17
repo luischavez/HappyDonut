@@ -16,20 +16,24 @@
  */
 package com.geometrycloud.happydonut;
 
-import com.geometrycloud.happydonut.database.DatabaseConstants;
-
 import com.github.luischavez.database.Database;
 import com.github.luischavez.database.configuration.ProjectSource;
 import com.github.luischavez.database.configuration.XMLBuilder;
 import com.github.luischavez.database.link.Affecting;
 import com.github.luischavez.database.link.RowList;
 
+import org.apache.commons.io.IOUtils;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.IOException;
+
 import static org.junit.Assert.*;
+import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 
 /**
  *
@@ -39,6 +43,9 @@ public class CategoryTest {
 
     // Instancia de la base de datos.
     private Database database;
+
+    // Datos de la imagen.
+    private byte[] image;
 
     /**
      * Se carga la configuracion de la base de datos de prueba.
@@ -58,9 +65,14 @@ public class CategoryTest {
      */
     @Before
     public void setUp() {
-        database = Database.use(DatabaseConstants.DATABASE_NAME);
+        database = Database.use(DATABASE_NAME);
         database.open();
         database.migrate();
+
+        try {
+            image = IOUtils.toByteArray(Context.class.getResource("/donut.jpg"));
+        } catch (IOException ex) {
+        }
     }
 
     /**
@@ -78,7 +90,7 @@ public class CategoryTest {
      */
     @Test
     public void testConnection() {
-        boolean exist = database.exists(DatabaseConstants.CATEGORIES_TABLE_NAME);
+        boolean exist = database.exists(CATEGORIES_TABLE_NAME);
         assertTrue(exist);
     }
 
@@ -88,7 +100,7 @@ public class CategoryTest {
     @Test
     public void testCategoryInsert() {
         Affecting insert = database
-                .insert(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "test");
+                .insert(CATEGORIES_TABLE_NAME, "image, name", image, "test");
         assertTrue(insert.success());
     }
 
@@ -98,10 +110,10 @@ public class CategoryTest {
     @Test
     public void testCategoryUpdate() {
         Affecting insert = database
-                .insert(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "test");
+                .insert(CATEGORIES_TABLE_NAME, "image, name", image, "test");
         Object id = insert.getGeneratedKeys()[0];
         Affecting update = database.where("category_id", "=", id)
-                .update(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "other");
+                .update(CATEGORIES_TABLE_NAME, "image, name", image, "other");
         assertTrue(update.success());
     }
 
@@ -111,10 +123,10 @@ public class CategoryTest {
     @Test
     public void testCategoryDelete() {
         Affecting insert = database
-                .insert(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "test");
+                .insert(CATEGORIES_TABLE_NAME, "image, name", image, "test");
         Object id = insert.getGeneratedKeys()[0];
         Affecting delete = database.where("category_id", "=", id)
-                .delete(DatabaseConstants.CATEGORIES_TABLE_NAME);
+                .delete(CATEGORIES_TABLE_NAME);
         assertTrue(delete.success());
     }
 
@@ -123,8 +135,8 @@ public class CategoryTest {
      */
     @Test
     public void testCategoryQuery() {
-        database.insert(DatabaseConstants.CATEGORIES_TABLE_NAME, "name", "test");
-        RowList rows = database.table(DatabaseConstants.CATEGORIES_TABLE_NAME).get();
+        database.insert(CATEGORIES_TABLE_NAME, "image, name", image, "test");
+        RowList rows = database.table(CATEGORIES_TABLE_NAME).get();
         assertTrue(0 < rows.size());
     }
 }

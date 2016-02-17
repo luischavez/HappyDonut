@@ -52,7 +52,7 @@ public class ProductFormPanel extends FormPanel implements ActionListener {
     // Alto de la imagen.
     public static final int IMAGE_HEIGHT = 240;
 
-    // Etiquetas.
+    /* Etiquetas. */
     private final JLabel nameLabel = new JLabel(message("name"));
     private final JLabel descriptionLabel = new JLabel(message("description"));
     private final JLabel ingredientsLabel = new JLabel(message("ingredients"));

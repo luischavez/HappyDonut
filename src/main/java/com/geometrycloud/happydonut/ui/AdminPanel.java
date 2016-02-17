@@ -28,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import static com.geometrycloud.happydonut.Context.*;
+import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 
 /**
  * Panel de administracion.
@@ -36,14 +37,28 @@ import static com.geometrycloud.happydonut.Context.*;
  */
 public class AdminPanel extends JPanel implements ActionListener {
 
+    // Boton para cargar la informacion de las categorias.
     private final JButton categoriesButton = new JButton(message("categories"));
+
+    // Boton para cargar la informacion de los productos.
     private final JButton productsButton = new JButton(message("products"));
+
+    // Boton para cargar la informacion de los proveedores.
     private final JButton providersButton = new JButton(message("providers"));
 
+    // Grafico.
+    private final ChartFilterPanel chart = new ChartFilterPanel();
+
+    /**
+     * Constructor vacio.
+     */
     public AdminPanel() {
         initComponents();
     }
 
+    /**
+     * Inicializa los componentes.
+     */
     private void initComponents() {
         categoriesButton.addActionListener(this);
         productsButton.addActionListener(this);
@@ -60,6 +75,7 @@ public class AdminPanel extends JPanel implements ActionListener {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1;
         constraints.weighty = 1;
+        constraints.gridwidth = 1;
         add(categoriesButton, constraints);
 
         constraints.gridx = 1;
@@ -67,6 +83,7 @@ public class AdminPanel extends JPanel implements ActionListener {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1;
         constraints.weighty = 1;
+        constraints.gridwidth = 1;
         add(productsButton, constraints);
 
         constraints.gridx = 2;
@@ -74,12 +91,42 @@ public class AdminPanel extends JPanel implements ActionListener {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1;
         constraints.weighty = 1;
+        constraints.gridwidth = 1;
         add(providersButton, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        add(chart, constraints);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getSource());
+        Object source = e.getSource();
+        String title = "";
+        ModelPanel modelPanel = null;
+        if (categoriesButton == source) {
+            title = CATEGORIES_TABLE_NAME;
+            modelPanel = new ModelPanel(CATEGORIES_TABLE_NAME, CATEGORIES_PRIMARY_KEY,
+                    CATEGORIES_DISPLAY_FIELDS, CATEGORIES_REQUIRED_FIELDS,
+                    CategoryFormPanel.class, false);
+        } else if (productsButton == source) {
+            title = PRODUCTS_TABLE_NAME;
+            modelPanel = new ModelPanel(PRODUCTS_TABLE_NAME, PRODUCTS_PRIMARY_KEY,
+                    PRODUCTS_DISPLAY_FIELDS, PRODUCTS_REQUIRED_FIELDS,
+                    ProductFormPanel.class, true);
+        } else if (providersButton == source) {
+            title = PROVIDERS_TABLE_NAME;
+            modelPanel = new ModelPanel(PROVIDERS_TABLE_NAME, PROVIDERS_PRIMARY_KEY,
+                    PROVIDERS_DISPLAY_FIELDS, PROVIDERS_REQUIRED_FIELDS,
+                    ProviderFormPanel.class, false);
+        }
+        if (null != modelPanel) {
+            UiUtils.display(message(title), modelPanel, this);
+        }
     }
 
     public static void main(String... args) {

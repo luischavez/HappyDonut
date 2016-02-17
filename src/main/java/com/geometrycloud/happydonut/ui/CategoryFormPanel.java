@@ -53,9 +53,7 @@ public class CategoryFormPanel extends FormPanel implements ActionListener {
     // Alto de la imagen.
     public static final int IMAGE_HEIGHT = 240;
 
-    /*
-     * Etiquetas.
-     */
+    /* Etiquetas. */
     private final JLabel nameLabel = new JLabel(message("add"));
 
     // Boton para la busqueda de imagenes.

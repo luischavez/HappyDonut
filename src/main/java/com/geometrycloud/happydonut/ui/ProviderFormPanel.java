@@ -37,9 +37,7 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  */
 public class ProviderFormPanel extends FormPanel {
 
-    /*
-    * Etiquetas.
-     */
+    /* Etiquetas. */
     private final JLabel firstNameLabel
             = new JLabel(message("first_name"));
     private final JLabel lastNameLabel

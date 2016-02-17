@@ -81,6 +81,20 @@ public class UiUtils {
     }
 
     /**
+     * Muestra una pantalla desplegable.
+     *
+     * @param title titulo.
+     * @param component componente a mostrar.
+     * @param parent componente padre.
+     */
+    public static void display(String title,
+            JComponent component, JComponent parent) {
+        JOptionPane.showOptionDialog(parent, component,
+                title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, new Object[0], null);
+    }
+
+    /**
      * Repinta un componente utilizando el hilo apropiado.
      *
      * @param component componente a repintar.
