@@ -43,6 +43,12 @@ public class DatabaseConstants {
     public static final int PROVIDERS_PHONE_SIZE = 32;
     public static final int PROVIDERS_EMAIL_SIZE = 128;
 
+    public static final String[] PROVIDERS_DISPLAY_FIELDS = {
+        PROVIDERS_FIRST_NAME, PROVIDERS_LAST_NAME,
+        PROVIDERS_PHONE, PROVIDERS_EMAIL,
+        PROVIDERS_INGREDIENTS
+    };
+
     public static final String[] PROVIDERS_REQUIRED_FIELDS = {
         PROVIDERS_FIRST_NAME, PROVIDERS_LAST_NAME,
         PROVIDERS_PHONE, PROVIDERS_EMAIL,
@@ -56,6 +62,10 @@ public class DatabaseConstants {
     public static final String CATEGORIES_NAME = "name";
 
     public static final int CATEGORY_NAME_SIZE = 128;
+
+    public static final String[] CATEGORIES_DISPLAY_FIELDS = {
+        CATEGORIES_NAME
+    };
 
     public static final String[] CATEGORIES_REQUIRED_FIELDS = {
         CATEGORIES_IMAGE, CATEGORIES_NAME
@@ -77,6 +87,11 @@ public class DatabaseConstants {
     public static final int PRODUCTS_NAME_SIZE = 128;
     public static final int PRODUCTS_PRICE_SIZE = 8;
     public static final int PRODUCTS_PRICE_ZEROS = 2;
+
+    public static final String[] PRODUCTS_DISPLAY_FIELDS = {
+        PRODUCTS_NAME,
+        PRODUCTS_PRICE, PRODUCTS_STOCK
+    };
 
     public static final String[] PRODUCTS_REQUIRED_FIELDS = {
         PRODUCTS_NAME, PRODUCTS_INGREDIENTS,
@@ -100,6 +115,11 @@ public class DatabaseConstants {
     public static final int SALE_DETAILS_NAME_SIZE = 128;
     public static final int SALE_DETAILS_PRICE_SIZE = 8;
     public static final int SALE_DETAILS_PRICE_ZEROS = 2;
+
+    public static final String[] SALE_DETAILS_DISPLAY_FIELDS = {
+        SALE_DETAILS_NAME, SALE_DETAILS_PRICE,
+        SALE_DETAILS_QUANTITY
+    };
 
     public static final String[] SALE_DETAILS_REQUIRED_FIELDS = {
         SALE_DETAILS_NAME, SALE_DETAILS_PRICE,
