@@ -95,7 +95,7 @@ public class DatabaseTableModel extends DefaultTableModel {
      * Carga la informacion de la base de datos.
      */
     public void loadData() {
-        rows = null != displayFields ? query.get(displayFields) : query.get();
+        rows = query.get();
     }
 
     /**

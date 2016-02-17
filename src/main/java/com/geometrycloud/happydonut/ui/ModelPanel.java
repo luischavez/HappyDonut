@@ -140,7 +140,7 @@ public class ModelPanel extends JPanel implements ActionListener {
     public static void main(String... args) {
         Main.loadLookAndFeel();
         UiUtils.launch("Model Panel",
-                new ModelPanel("categories",
+                new ModelPanel(CATEGORIES_TABLE_NAME,
                         CATEGORIES_DISPLAY_FIELDS, CATEGORIES_REQUIRED_FIELDS,
                         CategoryFormPanel.class));
     }
