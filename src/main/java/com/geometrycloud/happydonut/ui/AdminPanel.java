@@ -16,26 +16,74 @@
  */
 package com.geometrycloud.happydonut.ui;
 
+import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.util.UiUtils;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import static com.geometrycloud.happydonut.Context.*;
 
 /**
  * Panel de administracion.
  *
  * @author Luis Chavez Bustamante
  */
-public class AdminPanel extends JPanel {
+public class AdminPanel extends JPanel implements ActionListener {
+
+    private final JButton categoriesButton = new JButton(message("categories"));
+    private final JButton productsButton = new JButton(message("products"));
+    private final JButton providersButton = new JButton(message("providers"));
 
     public AdminPanel() {
         initComponents();
     }
 
     private void initComponents() {
-        
+        categoriesButton.addActionListener(this);
+        productsButton.addActionListener(this);
+        providersButton.addActionListener(this);
+
+        setLayout(new GridBagLayout());
+
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        constraints.insets.set(5, 5, 5, 5);
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        add(categoriesButton, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        add(productsButton, constraints);
+
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        add(providersButton, constraints);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println(e.getSource());
     }
 
     public static void main(String... args) {
+        Main.loadLookAndFeel();
         UiUtils.launch("Admin", new AdminPanel());
     }
 }
