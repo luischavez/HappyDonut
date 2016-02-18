@@ -42,12 +42,21 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 public class ProductPickerPanel extends JPanel
         implements CategoryListPanel.CategorySelectListener,
         ProductListPanel.ProductSelectListener {
+    
+    // Ancho del panel.
+    public static final int PANEL_WIDTH = (IMAGE_WIDTH * 4) + 50;
+    
+    // Alto del panel.
+    public static final int PANEL_HEIGHT = (IMAGE_HEIGHT * 2) + 200;
 
     // Numero maximo de item por fila.
     public static final int MAX_ITEMS_PER_ROW = 4;
 
     // Panel contenedor de las categorias y los productos.
-    private final JScrollPane scroll = new JScrollPane();
+    private final JScrollPane pickerScroll = new JScrollPane();
+
+    // Panel contenedor del carrito.
+    private final JScrollPane cartScroll = new JScrollPane();
 
     // Panel con la lista de categorias.
     private final CategoryListPanel categoryListPanel
@@ -56,6 +65,9 @@ public class ProductPickerPanel extends JPanel
     // Panel con la lista de productos.
     private final ProductListPanel productListPanel
             = new ProductListPanel(MAX_ITEMS_PER_ROW);
+
+    // Panel con la informacion del carrito.
+    private final CartListPanel cartListPanel = new CartListPanel();
 
     /**
      * Constructor vacio.
@@ -68,16 +80,25 @@ public class ProductPickerPanel extends JPanel
      * Inicializa los componentes.
      */
     private void initComponents() {
+        setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        
         categoryListPanel.loadData();
+        cartListPanel.loadData();
 
         categoryListPanel.addCategorySelectListener(this);
         productListPanel.addCategorySelectListener(this);
 
-        scroll.setViewportView(categoryListPanel);
-        Dimension size = scroll.getPreferredSize();
-        size.width += IMAGE_WIDTH / 2;
-        size.height += IMAGE_HEIGHT / 2;
-        scroll.setPreferredSize(size);
+        pickerScroll.setViewportView(categoryListPanel);
+        Dimension pickerSize = pickerScroll.getPreferredSize();
+        pickerSize.width += IMAGE_WIDTH / 2;
+        pickerSize.height += IMAGE_HEIGHT / 4;
+        pickerScroll.setPreferredSize(pickerSize);
+
+        cartScroll.setViewportView(cartListPanel);
+        Dimension cartSize = cartScroll.getPreferredSize();
+        cartSize.width = 50;
+        cartScroll.setPreferredSize(cartSize);
 
         setLayout(new GridBagLayout());
 
@@ -87,11 +108,19 @@ public class ProductPickerPanel extends JPanel
 
         constraints.gridx = 0;
         constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.anchor = GridBagConstraints.NORTH;
+        add(pickerScroll, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 0;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1;
         constraints.weighty = 1;
-
-        add(scroll, constraints);
+        constraints.anchor = GridBagConstraints.CENTER;
+        add(cartScroll, constraints);
     }
 
     @Override
@@ -107,7 +136,7 @@ public class ProductPickerPanel extends JPanel
         } else {
             productListPanel.setCategory(category);
             productListPanel.loadData();
-            scroll.setViewportView(productListPanel);
+            pickerScroll.setViewportView(productListPanel);
             UiUtils.repaint(this);
         }
     }
@@ -121,11 +150,15 @@ public class ProductPickerPanel extends JPanel
         if (confirm) {
             Object productId = product.value(PRODUCTS_PRIMARY_KEY);
             double quantity = input.result();
+            if (1 > quantity) {
+                return;
+            }
             DATABASE.insert(CART_TABLE_NAME,
                     DatabaseUtils.columns(CART_PRODUCT, CART_QUANTITY),
                     productId, quantity);
+            cartListPanel.loadData();
         }
-        scroll.setViewportView(categoryListPanel);
+        pickerScroll.setViewportView(categoryListPanel);
         UiUtils.repaint(this);
     }
 
