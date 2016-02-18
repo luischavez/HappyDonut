@@ -116,7 +116,7 @@ public class ProductPickerPanel extends JPanel
         InputNumberForm input = new InputNumberForm(
                 message("quantity"),
                 message("quantity.description"), false);
-        boolean confirm = UiUtils.confirm(message("quantity"), input, this);
+        boolean confirm = UiUtils.plain(message("quantity"), input, this);
         if (confirm) {
             System.out.println(input.result());
         }

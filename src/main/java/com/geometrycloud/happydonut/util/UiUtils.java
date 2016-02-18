@@ -133,4 +133,20 @@ public class UiUtils {
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         return JOptionPane.OK_OPTION == option;
     }
+
+    /**
+     * Muestra un dialogo de confirmacion.
+     *
+     * @param title
+     * @param message mensaje a mostrar.
+     * @param parent componente padre.
+     * @return true si acepto, false si no.
+     */
+    public static boolean plain(String title,
+            Object message, JComponent parent) {
+        int option = JOptionPane.showConfirmDialog(parent,
+                message, title,
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        return JOptionPane.OK_OPTION == option;
+    }
 }
