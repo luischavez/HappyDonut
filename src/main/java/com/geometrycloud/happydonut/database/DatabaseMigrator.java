@@ -19,9 +19,9 @@ package com.geometrycloud.happydonut.database;
 import com.github.luischavez.database.Migrator;
 
 /**
- * Migracion inicial de la base de datos, contiene la informacion para
- * crear las tablas necesarias y eliminarlas en caso de ser necesario.
- * 
+ * Migracion inicial de la base de datos, contiene la informacion para crear las
+ * tablas necesarias y eliminarlas en caso de ser necesario.
+ *
  * @author Luis Chavez Bustamante
  */
 public class DatabaseMigrator extends Migrator {
@@ -36,5 +36,6 @@ public class DatabaseMigrator extends Migrator {
         register(new CreateProductsTable());
         register(new CreateSalesTable());
         register(new CreateSaleDetailsTable());
+        register(new CreateCartTable());
     }
 }

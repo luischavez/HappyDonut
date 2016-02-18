@@ -131,4 +131,9 @@ public class DatabaseConstants {
         SALE_DETAILS_NAME, SALE_DETAILS_PRICE,
         SALE_DETAILS_QUANTITY, SALE_DETAILS_SALE
     };
+
+    // Definicion de la tabla del carrito.
+    public static final String CART_TABLE_NAME = "cart";
+    public static final String CART_PRIMARY_KEY = "item_id";
+    public static final String CART_PRODUCT = "product_id";
 }
