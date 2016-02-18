@@ -47,12 +47,6 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  */
 public class CategoryFormPanel extends FormPanel implements ActionListener {
 
-    // Ancho de la imagen.
-    public static final int IMAGE_WIDTH = 240;
-
-    // Alto de la imagen.
-    public static final int IMAGE_HEIGHT = 240;
-
     /* Etiquetas. */
     private final JLabel nameLabel = new JLabel(message("add"));
 

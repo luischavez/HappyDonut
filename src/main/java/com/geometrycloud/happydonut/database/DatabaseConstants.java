@@ -29,6 +29,12 @@ public class DatabaseConstants {
     // Nombre de la conexion.
     public static final String DATABASE_NAME = "default";
 
+    // Ancho de las imagenes.
+    public static final int IMAGE_WIDTH = 240;
+
+    // Alto de las imagenes.
+    public static final int IMAGE_HEIGHT = 240;
+
     // Definicion de la tabla de proveedores.
     public static final String PROVIDERS_TABLE_NAME = "providers";
     public static final String PROVIDERS_PRIMARY_KEY = "provider_id";
