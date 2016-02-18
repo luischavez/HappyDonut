@@ -17,21 +17,22 @@
 package com.geometrycloud.happydonut.ui;
 
 import com.geometrycloud.happydonut.Main;
+import com.geometrycloud.happydonut.util.DatabaseUtils;
 import com.geometrycloud.happydonut.util.UiUtils;
+
+import com.github.luischavez.database.link.Affecting;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import static com.geometrycloud.happydonut.Context.*;
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
-import com.geometrycloud.happydonut.util.DatabaseUtils;
-import com.github.luischavez.database.link.Affecting;
-import java.time.LocalDateTime;
 
 /**
  * Panel de administracion.
@@ -136,9 +137,9 @@ public class AdminPanel extends JPanel implements ActionListener {
         Main.loadLookAndFeel();
         Affecting insert = DATABASE.insert(SALES_TABLE_NAME, SALES_SALE_DATE, LocalDateTime.now());
         Object saleId = insert.getGeneratedKeys()[0];
-        DATABASE.insert(SALE_DETAILS_TABLE_NAME, 
-                DatabaseUtils.columns(SALE_DETAILS_NAME, SALE_DETAILS_PRICE, 
-                        SALE_DETAILS_QUANTITY, SALE_DETAILS_SALE), 
+        DATABASE.insert(SALE_DETAILS_TABLE_NAME,
+                DatabaseUtils.columns(SALE_DETAILS_NAME, SALE_DETAILS_PRICE,
+                        SALE_DETAILS_QUANTITY, SALE_DETAILS_SALE),
                 "Donitas", 100, 5, saleId);
         UiUtils.launch("Admin", new AdminPanel());
     }
