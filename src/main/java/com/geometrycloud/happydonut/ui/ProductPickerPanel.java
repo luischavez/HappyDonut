@@ -95,7 +95,6 @@ public class ProductPickerPanel extends JPanel
 
     @Override
     public void onSelectCategory(Row category) {
-        System.out.printf("Categoria: %s\n", category.string(CATEGORIES_NAME));
         RowList products = DATABASE.table(PRODUCTS_TABLE_NAME)
                 .where(PRODUCTS_CATEGORY, "=",
                         category.value(CATEGORIES_PRIMARY_KEY))
@@ -115,7 +114,6 @@ public class ProductPickerPanel extends JPanel
 
     @Override
     public void onSelectProduct(Row product) {
-        System.out.printf("Producto: %s\n", product.string(PRODUCTS_NAME));
         scroll.setViewportView(categoryListPanel);
         UiUtils.repaint(this);
     }

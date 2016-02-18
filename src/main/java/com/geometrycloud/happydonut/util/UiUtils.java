@@ -16,6 +16,7 @@
  */
 package com.geometrycloud.happydonut.util;
 
+import com.geometrycloud.happydonut.Context;
 import com.geometrycloud.happydonut.swing.FormPanel;
 
 import java.awt.EventQueue;
@@ -68,9 +69,8 @@ public class UiUtils {
                 if (map.containsKey(field)) {
                     Object value = map.get(field);
                     if (null == value || value.toString().isEmpty()) {
-                        warning("El campo no es valido",
-                                String.format("El campo %s no puede ser nulo",
-                                        field), parent);
+                        warning(Context.message("invalid.title"),
+                                Context.message("invalid.message"), parent);
                         return form(title, form, parent, required);
                     }
                 }
@@ -126,7 +126,7 @@ public class UiUtils {
      */
     public static boolean confirm(JComponent parent) {
         int option = JOptionPane.showConfirmDialog(parent,
-                "Desea continuar?", "",
+                Context.message("confirm"), "",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         return JOptionPane.OK_OPTION == option;
     }

@@ -16,9 +16,7 @@
  */
 package com.geometrycloud.happydonut.ui;
 
-import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.swing.VirtualNumPad;
-import com.geometrycloud.happydonut.util.UiUtils;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -108,11 +106,5 @@ public class InputNumberForm extends JPanel {
      */
     public double result() {
         return numPad.result();
-    }
-
-    public static void main(String... args) {
-        Main.loadLookAndFeel();
-        UiUtils.launch("Input",
-                new InputNumberForm("Cantidad", "Ingresa la cantidad", true));
     }
 }
