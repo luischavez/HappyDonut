@@ -166,7 +166,10 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int rowIndex = Integer.valueOf(e.getActionCommand());
-                if (UiUtils.confirm(ModelPanel.this)) {
+                if (UiUtils.confirm(
+                        message("warning.title"),
+                        message("warning.delete"),
+                        ModelPanel.this)) {
                     Row row = model.row(rowIndex);
                     DATABASE.where(primaryKeyName, "=",
                             row.value(primaryKeyName))

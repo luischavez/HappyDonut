@@ -104,7 +104,6 @@ public class ProductPickerPanel extends JPanel
                     message("warning.title"),
                     message("warning.empty"), this);
         } else {
-            // TODO: HANDLE CART
             productListPanel.setCategory(category);
             productListPanel.loadData();
             scroll.setViewportView(productListPanel);
@@ -114,6 +113,13 @@ public class ProductPickerPanel extends JPanel
 
     @Override
     public void onSelectProduct(Row product) {
+        InputNumberForm input = new InputNumberForm(
+                message("quantity"),
+                message("quantity.description"), false);
+        boolean confirm = UiUtils.confirm(message("quantity"), input, this);
+        if (confirm) {
+            System.out.println(input.result());
+        }
         scroll.setViewportView(categoryListPanel);
         UiUtils.repaint(this);
     }

@@ -200,7 +200,8 @@ public class VirtualNumPad extends JPanel implements ActionListener {
      * @return resultado.
      */
     public double result() {
-        return Double.valueOf(field.getText());
+        String text = field.getText();
+        return text.isEmpty() ? 0 : Double.valueOf(text);
     }
 
     @Override

@@ -84,12 +84,12 @@ public class UiUtils {
      * Muestra una pantalla desplegable.
      *
      * @param title titulo.
-     * @param component componente a mostrar.
+     * @param message mensaje a mostrar.
      * @param parent componente padre.
      */
     public static void display(String title,
-            JComponent component, JComponent parent) {
-        JOptionPane.showOptionDialog(parent, component,
+            Object message, JComponent parent) {
+        JOptionPane.showOptionDialog(parent, message,
                 title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                 null, new Object[0], null);
     }
@@ -121,12 +121,15 @@ public class UiUtils {
     /**
      * Muestra un dialogo de confirmacion.
      *
+     * @param title
+     * @param message mensaje a mostrar.
      * @param parent componente padre.
      * @return true si acepto, false si no.
      */
-    public static boolean confirm(JComponent parent) {
+    public static boolean confirm(String title,
+            Object message, JComponent parent) {
         int option = JOptionPane.showConfirmDialog(parent,
-                Context.message("confirm"), "",
+                message, title,
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         return JOptionPane.OK_OPTION == option;
     }
