@@ -19,6 +19,7 @@ package com.geometrycloud.happydonut.util;
 import com.geometrycloud.happydonut.swing.DatabaseComboBoxModel;
 
 import com.github.luischavez.database.link.Row;
+import java.util.Arrays;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +57,16 @@ public class DatabaseUtils {
         return map.keySet()
                 .stream()
                 .collect(Collectors.joining(","));
+    }
+
+    /**
+     * Obtiene los nombres de las columnas separados por comas.
+     *
+     * @param columns arreglo de columnas.
+     * @return cadena con las columnas separadas por comas.
+     */
+    public static String columns(String... columns) {
+        return Arrays.asList(columns).stream().collect(Collectors.joining(","));
     }
 
     /**

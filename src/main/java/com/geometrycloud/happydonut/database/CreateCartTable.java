@@ -33,6 +33,7 @@ public class CreateCartTable implements Migration {
     public void up(Database database) {
         database.create(CART_TABLE_NAME, (table) -> {
             table.integer(CART_PRIMARY_KEY).unsigned().incremented();
+            table.integer(CART_QUANTITY).unsigned();
             table.integer(CART_PRODUCT).unsigned();
 
             table.primary(CART_PRIMARY_KEY);

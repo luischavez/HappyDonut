@@ -17,6 +17,7 @@
 package com.geometrycloud.happydonut.ui;
 
 import com.geometrycloud.happydonut.Main;
+import com.geometrycloud.happydonut.util.DatabaseUtils;
 import com.geometrycloud.happydonut.util.UiUtils;
 
 import com.github.luischavez.database.link.Row;
@@ -118,7 +119,11 @@ public class ProductPickerPanel extends JPanel
                 message("quantity.description"), false);
         boolean confirm = UiUtils.plain(message("quantity"), input, this);
         if (confirm) {
-            System.out.println(input.result());
+            Object productId = product.value(PRODUCTS_PRIMARY_KEY);
+            double quantity = input.result();
+            DATABASE.insert(CART_TABLE_NAME,
+                    DatabaseUtils.columns(CART_PRODUCT, CART_QUANTITY),
+                    productId, quantity);
         }
         scroll.setViewportView(categoryListPanel);
         UiUtils.repaint(this);
