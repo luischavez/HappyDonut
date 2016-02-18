@@ -39,13 +39,14 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  *
  * @author Luis Chavez Bustamante
  */
-public class ProductPickerPanel extends JPanel
+public class PointSalePanel extends JPanel
         implements CategoryListPanel.CategorySelectListener,
-        ProductListPanel.ProductSelectListener {
-    
+        ProductListPanel.ProductSelectListener,
+        CartListPanel.CartListener {
+
     // Ancho del panel.
     public static final int PANEL_WIDTH = (IMAGE_WIDTH * 4) + 50;
-    
+
     // Alto del panel.
     public static final int PANEL_HEIGHT = (IMAGE_HEIGHT * 2) + 200;
 
@@ -69,10 +70,13 @@ public class ProductPickerPanel extends JPanel
     // Panel con la informacion del carrito.
     private final CartListPanel cartListPanel = new CartListPanel();
 
+    // Panel con la informacion del total del carrito.
+    private final CheckoutPanel checkoutPanel = new CheckoutPanel();
+
     /**
      * Constructor vacio.
      */
-    public ProductPickerPanel() {
+    public PointSalePanel() {
         initComponents();
     }
 
@@ -82,12 +86,14 @@ public class ProductPickerPanel extends JPanel
     private void initComponents() {
         setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        
+
         categoryListPanel.loadData();
         cartListPanel.loadData();
+        checkoutPanel.loadData();
 
         categoryListPanel.addCategorySelectListener(this);
         productListPanel.addCategorySelectListener(this);
+        cartListPanel.addCartListener(this);
 
         pickerScroll.setViewportView(categoryListPanel);
         Dimension pickerSize = pickerScroll.getPreferredSize();
@@ -114,12 +120,22 @@ public class ProductPickerPanel extends JPanel
         constraints.anchor = GridBagConstraints.NORTH;
         add(pickerScroll, constraints);
 
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.anchor = GridBagConstraints.LAST_LINE_START;
+        add(checkoutPanel, constraints);
+
         constraints.gridx = 1;
         constraints.gridy = 0;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        constraints.gridheight = GridBagConstraints.REMAINDER;
         add(cartScroll, constraints);
     }
 
@@ -157,13 +173,20 @@ public class ProductPickerPanel extends JPanel
                     DatabaseUtils.columns(CART_PRODUCT, CART_QUANTITY),
                     productId, quantity);
             cartListPanel.loadData();
+            checkoutPanel.loadData();
         }
+        categoryListPanel.loadData();
         pickerScroll.setViewportView(categoryListPanel);
         UiUtils.repaint(this);
     }
 
+    @Override
+    public void onProductRemoved() {
+        checkoutPanel.loadData();
+    }
+
     public static void main(String... args) {
         Main.loadLookAndFeel();
-        UiUtils.launch("MAIN", new ProductPickerPanel());
+        UiUtils.launch("MAIN", new PointSalePanel());
     }
 }

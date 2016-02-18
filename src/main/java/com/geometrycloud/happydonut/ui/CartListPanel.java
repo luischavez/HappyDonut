@@ -28,6 +28,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -42,6 +44,9 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  * @author Luis Chávez Bustamante
  */
 public class CartListPanel extends JPanel implements ActionListener {
+
+    // Lista de observadores.
+    private final List<CartListener> listeners = new ArrayList<>();
 
     // Lista de objetos en el carrito.
     private RowList cartItems = null;
@@ -58,6 +63,26 @@ public class CartListPanel extends JPanel implements ActionListener {
      */
     private void initComponents() {
         setLayout(new GridBagLayout());
+    }
+
+    /**
+     * Agrega un nuevo observador.
+     *
+     * @param listener observador.
+     */
+    public void addCartListener(CartListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    /**
+     * Elimina un observador.
+     *
+     * @param listener observador.
+     */
+    public void removeCartListener(CartListener listener) {
+        listeners.remove(listener);
     }
 
     /**
@@ -104,9 +129,13 @@ public class CartListPanel extends JPanel implements ActionListener {
                 message("warning.delete"), this);
         if (confirm) {
             Object cartItemId = e.getActionCommand();
+
             DATABASE.where(CART_PRIMARY_KEY, "=", cartItemId)
                     .delete(CART_TABLE_NAME);
             loadData();
+            for (CartListener listener : listeners) {
+                listener.onProductRemoved();
+            }
         }
     }
 
@@ -166,6 +195,17 @@ public class CartListPanel extends JPanel implements ActionListener {
             constraints.weighty = 1;
             add(remove, constraints);
         }
+    }
+
+    /**
+     * Interface para la escucha de eventos del carrito.
+     */
+    public interface CartListener {
+
+        /**
+         * Se lanza cuando se remueve un producto del carrito.
+         */
+        void onProductRemoved();
     }
 
     public static void main(String... args) {
