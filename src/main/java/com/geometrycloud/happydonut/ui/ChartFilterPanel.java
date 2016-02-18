@@ -16,18 +16,23 @@
  */
 package com.geometrycloud.happydonut.ui;
 
+import com.geometrycloud.happydonut.util.UiUtils;
+
 import com.github.luischavez.database.link.Row;
 import com.github.luischavez.database.link.RowList;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.jdatepicker.DateModel;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.JDatePanel;
 
@@ -45,7 +50,7 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  *
  * @author Luis Chavez Bustamante
  */
-public class ChartFilterPanel extends JPanel {
+public class ChartFilterPanel extends JPanel implements ActionListener {
 
     // Fabrica para generar campos de fecha.
     private final JDateComponentFactory datePickerFactory
@@ -71,13 +76,15 @@ public class ChartFilterPanel extends JPanel {
      */
     public ChartFilterPanel() {
         initComponents();
-        createChart();
     }
 
     /**
      * Inicializa los componentes.
      */
     private void initComponents() {
+        fromPicker.addActionListener(this);
+        toPicker.addActionListener(this);
+
         chart = new ChartPanel(createChart());
 
         setLayout(new GridBagLayout());
@@ -134,11 +141,11 @@ public class ChartFilterPanel extends JPanel {
      * @param to hasta donde buscar.
      * @return informacion de la grafica.
      */
-    private PieDataset chartDataset(LocalDateTime from, LocalDateTime to) {
+    private PieDataset chartDataset(LocalDate from, LocalDate to) {
         DefaultPieDataset dataset = new DefaultPieDataset();
         RowList sales = DATABASE.table(SALES_TABLE_NAME)
-                .where(SALES_SALE_DATE, ">=", from)
-                .where(SALES_SALE_DATE, "<=", to)
+                .where(SALES_SALE_DATE, ">=", from.toString())
+                .where(SALES_SALE_DATE, "<=", to.toString())
                 .get(SALES_PRIMARY_KEY, SALES_SALE_DATE);
         HashMap<String, Long> top = new HashMap<>();
         for (Row sale : sales) {
@@ -162,13 +169,30 @@ public class ChartFilterPanel extends JPanel {
     }
 
     /**
+     * Obtiene una instancia de del timpo local.
+     *
+     * @param panel panel de fecha.
+     * @return instancia del tiempo.
+     */
+    private LocalDate build(JDatePanel panel) {
+        DateModel<?> model = panel.getModel();
+        return LocalDate.of(model.getYear(), model.getMonth() + 1, model.getDay());
+    }
+
+    /**
      * Crea un nuevo grafico con la informacion del top de ventas.
      *
      * @return grafico.
      */
     private JFreeChart createChart() {
-        LocalDateTime from = null, to = null;
+        LocalDate from = build(fromPicker), to = build(toPicker);
         return ChartFactory
                 .createPieChart(message("TOP"), chartDataset(from, to));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        chart.setChart(createChart());
+        UiUtils.repaint(chart);
     }
 }
