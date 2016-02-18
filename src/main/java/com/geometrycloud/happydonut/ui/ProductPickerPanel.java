@@ -42,14 +42,19 @@ public class ProductPickerPanel extends JPanel
         implements CategoryListPanel.CategorySelectListener,
         ProductListPanel.ProductSelectListener {
 
+    // Numero maximo de item por fila.
+    public static final int MAX_ITEMS_PER_ROW = 4;
+
     // Panel contenedor de las categorias y los productos.
     private final JScrollPane scroll = new JScrollPane();
 
     // Panel con la lista de categorias.
-    private final CategoryListPanel categoryListPanel = new CategoryListPanel();
+    private final CategoryListPanel categoryListPanel
+            = new CategoryListPanel(MAX_ITEMS_PER_ROW);
 
     // Panel con la lista de productos.
-    private final ProductListPanel productListPanel = new ProductListPanel();
+    private final ProductListPanel productListPanel
+            = new ProductListPanel(MAX_ITEMS_PER_ROW);
 
     /**
      * Constructor vacio.
@@ -67,10 +72,11 @@ public class ProductPickerPanel extends JPanel
         categoryListPanel.addCategorySelectListener(this);
         productListPanel.addCategorySelectListener(this);
 
-        scroll.setPreferredSize(
-                new Dimension(IMAGE_WIDTH * 4, IMAGE_HEIGHT * 2));
-
         scroll.setViewportView(categoryListPanel);
+        Dimension size = scroll.getPreferredSize();
+        size.width += IMAGE_WIDTH / 2;
+        size.height += IMAGE_HEIGHT / 2;
+        scroll.setPreferredSize(size);
 
         setLayout(new GridBagLayout());
 

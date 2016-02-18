@@ -16,6 +16,7 @@
  */
 package com.geometrycloud.happydonut.ui;
 
+import com.geometrycloud.happydonut.Fonts;
 import com.geometrycloud.happydonut.swing.ImagePanel;
 import com.geometrycloud.happydonut.util.UiUtils;
 
@@ -35,6 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import static com.geometrycloud.happydonut.Context.*;
+
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 
 /**
@@ -44,18 +46,25 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  */
 public class CategoryListPanel extends JPanel implements MouseListener {
 
-    // Numero maximo de item por fila.
-    public static final int MAX_ITEM_PER_ROW = 4;
-
     // Listado de observadores.
     private final List<CategorySelectListener> listeners = new ArrayList<>();
 
+    // Titulo del listado.
+    private final JLabel title = new JLabel(message(CATEGORIES_TABLE_NAME));
+
+    // Numero maximo de items por fila.
+    private final int maxItemsPerRow;
+
+    // Lista de categorias.
     private RowList categories = null;
 
     /**
-     * Constructor vacio.
+     * Constructor principal.
+     *
+     * @param maxItemsPerRow numero maximo de items por fila.
      */
-    public CategoryListPanel() {
+    public CategoryListPanel(int maxItemsPerRow) {
+        this.maxItemsPerRow = maxItemsPerRow;
         initComponents();
     }
 
@@ -65,6 +74,8 @@ public class CategoryListPanel extends JPanel implements MouseListener {
     private void initComponents() {
         addMouseListener(this);
 
+        title.setFont(Fonts.TITLE_FONT);
+
         setLayout(new GridBagLayout());
     }
 
@@ -73,13 +84,21 @@ public class CategoryListPanel extends JPanel implements MouseListener {
      */
     public void loadData() {
         categories = DATABASE.table(CATEGORIES_TABLE_NAME).get();
-        removeAll();
         GridBagConstraints constraints = new GridBagConstraints();
+        removeAll();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        add(title, constraints);
+        constraints.gridwidth = 1;
         int x = 0;
-        int y = 0;
+        int y = 1;
         int count = 0;
         for (Row category : categories) {
-            if (MAX_ITEM_PER_ROW == count++) {
+            if (maxItemsPerRow == count++) {
                 x = 0;
                 y++;
                 count = 0;
@@ -87,9 +106,6 @@ public class CategoryListPanel extends JPanel implements MouseListener {
             CategoryItem item = new CategoryItem(category);
             constraints.gridx = x++;
             constraints.gridy = y;
-            constraints.fill = GridBagConstraints.NONE;
-            constraints.weightx = 1;
-            constraints.weighty = 1;
             add(item, constraints);
         }
         UiUtils.repaint(this);
@@ -182,6 +198,7 @@ public class CategoryListPanel extends JPanel implements MouseListener {
          */
         private void initComponents() {
             image.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+            name.setFont(Fonts.TEXT_FONT);
 
             image.setBytes(category.bytes(CATEGORIES_IMAGE).array());
             name.setText(category.string(CATEGORIES_NAME));
