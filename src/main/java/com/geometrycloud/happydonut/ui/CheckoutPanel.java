@@ -146,6 +146,10 @@ public class CheckoutPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        double totalAmount = calculate();
+        if (0 == totalAmount) {
+            return;
+        }
         InputNumberForm input = new InputNumberForm(
                 message("amount"), message("amount.description"), true);
         boolean confirm = UiUtils.plain(
@@ -153,7 +157,6 @@ public class CheckoutPanel extends JPanel implements ActionListener {
                 input, (JComponent) this.getParent());
         if (confirm) {
             double result = input.result();
-            double totalAmount = calculate();
             if (result < totalAmount) {
                 UiUtils.warning(
                         message("warning.title"),
