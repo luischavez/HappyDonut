@@ -29,5 +29,5 @@ public final class Fonts {
     public static final Font TITLE_FONT = new Font("Serif", Font.ITALIC, 32);
 
     // Fuente para los textos.
-    public static final Font TEXT_FONT = new Font("Serif", Font.PLAIN, 24);
+    public static final Font TEXT_FONT = new Font("Serif", Font.PLAIN, 22);
 }

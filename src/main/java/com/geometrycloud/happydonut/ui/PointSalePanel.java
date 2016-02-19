@@ -48,7 +48,7 @@ public class PointSalePanel extends JPanel
         CheckoutPanel.CheckoutListener {
 
     // Ancho del panel.
-    public static final int PANEL_WIDTH = (IMAGE_WIDTH * 4) + 50;
+    public static final int PANEL_WIDTH = (IMAGE_WIDTH * 5) + 200;
 
     // Alto del panel.
     public static final int PANEL_HEIGHT = (IMAGE_HEIGHT * 2) + 200;
@@ -107,7 +107,7 @@ public class PointSalePanel extends JPanel
 
         cartScroll.setViewportView(cartListPanel);
         Dimension cartSize = cartScroll.getPreferredSize();
-        cartSize.width = 50;
+        cartSize.width = 200;
         cartScroll.setPreferredSize(cartSize);
 
         setLayout(new GridBagLayout());
