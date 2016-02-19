@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
 
 /**
  * Panel con la capacidad para establecer sus propiedades a partir de un objeto,
@@ -148,5 +151,16 @@ public class FormPanel extends JPanel {
         List<Field> fields = fillableFields(this);
         Map<String, Object> map = mapFields(fields, this);
         return map;
+    }
+
+    /**
+     * Establece un filtro para el documento especificado.
+     *
+     * @param document documento.
+     * @param filter filtro.
+     */
+    protected void setFilter(Document document, DocumentFilter filter) {
+        AbstractDocument abstractDocument = (AbstractDocument) document;
+        abstractDocument.setDocumentFilter(filter);
     }
 }

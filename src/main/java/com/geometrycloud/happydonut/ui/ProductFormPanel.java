@@ -19,6 +19,9 @@ package com.geometrycloud.happydonut.ui;
 import com.geometrycloud.happydonut.Context;
 import com.geometrycloud.happydonut.swing.DatabaseComboBox;
 import com.geometrycloud.happydonut.swing.DatabaseComboBoxModel;
+import com.geometrycloud.happydonut.filter.DecimalFilter;
+import com.geometrycloud.happydonut.filter.IntegerFilter;
+import com.geometrycloud.happydonut.filter.MaxSizeFilter;
 import com.geometrycloud.happydonut.swing.Fillable;
 import com.geometrycloud.happydonut.swing.FormPanel;
 import com.geometrycloud.happydonut.swing.ImagePanel;
@@ -96,6 +99,10 @@ public class ProductFormPanel extends FormPanel implements ActionListener {
     private void initComponents() {
         image.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
         searchImageButton.addActionListener(this);
+
+        setFilter(name.getDocument(), new MaxSizeFilter(PRODUCTS_NAME_SIZE));
+        setFilter(price.getDocument(), new DecimalFilter());
+        setFilter(stock.getDocument(), new IntegerFilter());
 
         DatabaseComboBoxModel model
                 = new DatabaseComboBoxModel(CATEGORIES_PRIMARY_KEY, CATEGORIES_NAME,

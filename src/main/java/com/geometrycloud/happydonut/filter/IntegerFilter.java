@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 2016 Luis Chávez Bustamante
+/*
+ * Copyright (C) 2016 Luis Chavez Bustamante
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,33 +18,18 @@ package com.geometrycloud.happydonut.filter;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
 /**
- * Filtro para limitar el tamano maximo de un campo.
  *
- * @author Luis Chávez Bustamante
+ * @author Luis Chavez Bustamante
  */
-public class MaxSizeFilter extends DocumentFilter {
-
-    // Tamano maximo del campo.
-    private final int max;
-
-    /**
-     * Constructor del filtro.
-     *
-     * @param max tamano maximo.
-     */
-    public MaxSizeFilter(int max) {
-        this.max = max;
-    }
+public class IntegerFilter extends DocumentFilter {
 
     @Override
-    public void insertString(FilterBypass fb, int offset,
-            String string, AttributeSet attr) throws BadLocationException {
-        Document document = fb.getDocument();
-        if (max >= document.getLength() + string.length()) {
+    public void insertString(FilterBypass fb, int offset, String string,
+            AttributeSet attr) throws BadLocationException {
+        if (string.matches("^\\d+$")) {
             super.insertString(fb, offset, string, attr);
         }
     }
@@ -52,8 +37,7 @@ public class MaxSizeFilter extends DocumentFilter {
     @Override
     public void replace(FilterBypass fb, int offset, int length, String text,
             AttributeSet attrs) throws BadLocationException {
-        Document document = fb.getDocument();
-        if (max >= document.getLength() + text.length()) {
+        if (text.matches("^\\d+$")) {
             super.insertString(fb, offset, text, attrs);
         }
     }

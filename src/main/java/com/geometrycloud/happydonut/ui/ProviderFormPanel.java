@@ -16,6 +16,7 @@
  */
 package com.geometrycloud.happydonut.ui;
 
+import com.geometrycloud.happydonut.filter.MaxSizeFilter;
 import com.geometrycloud.happydonut.swing.Fillable;
 import com.geometrycloud.happydonut.swing.FormPanel;
 
@@ -78,6 +79,15 @@ public class ProviderFormPanel extends FormPanel {
      * Inicializa los componentes.
      */
     private void initComponents() {
+        setFilter(firstName.getDocument(),
+                new MaxSizeFilter(PROVIDERS_FIRST_NAME_SIZE));
+        setFilter(lastName.getDocument(),
+                new MaxSizeFilter(PROVIDERS_LAST_NAME_SIZE));
+        setFilter(phone.getDocument(),
+                new MaxSizeFilter(PROVIDERS_PHONE_SIZE));
+        setFilter(email.getDocument(),
+                new MaxSizeFilter(PROVIDERS_EMAIL_SIZE));
+
         setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();

@@ -34,7 +34,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.AbstractDocument;
 
 import static com.geometrycloud.happydonut.Context.*;
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
@@ -75,9 +74,7 @@ public class CategoryFormPanel extends FormPanel implements ActionListener {
 
         image.setSize(new Dimension(IMAGE_WIDTH, IMAGE_HEIGHT));
 
-        AbstractDocument document = (AbstractDocument) name.getDocument();
-        document.setDocumentFilter(
-                new MaxSizeFilter(CATEGORY_NAME_SIZE));
+        setFilter(name.getDocument(), new MaxSizeFilter(CATEGORY_NAME_SIZE));
 
         setLayout(new GridBagLayout());
 
