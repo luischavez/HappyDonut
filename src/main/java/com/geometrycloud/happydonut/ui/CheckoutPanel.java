@@ -65,8 +65,9 @@ public class CheckoutPanel extends JPanel {
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.fill = GridBagConstraints.NONE;
-        constraints.weightx = 0;
-        constraints.weighty = 0;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.anchor = GridBagConstraints.LAST_LINE_START;
         add(total, constraints);
     }
 
