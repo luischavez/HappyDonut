@@ -47,14 +47,8 @@ public class PointSalePanel extends JPanel
         CartListPanel.CartListener,
         CheckoutPanel.CheckoutListener {
 
-    // Ancho del panel.
-    public static final int PANEL_WIDTH = (IMAGE_WIDTH * 5) + 200;
-
-    // Alto del panel.
-    public static final int PANEL_HEIGHT = (IMAGE_HEIGHT * 2) + 200;
-
     // Numero maximo de item por fila.
-    public static final int MAX_ITEMS_PER_ROW = 4;
+    public static final int MAX_ITEMS_PER_ROW = 3;
 
     // Panel contenedor de las categorias y los productos.
     private final JScrollPane pickerScroll = new JScrollPane();
@@ -87,9 +81,6 @@ public class PointSalePanel extends JPanel
      * Inicializa los componentes.
      */
     private void initComponents() {
-        setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-
         categoryListPanel.loadData();
         cartListPanel.loadData();
         checkoutPanel.loadData();

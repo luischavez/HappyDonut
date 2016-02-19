@@ -48,6 +48,7 @@ public class UiUtils {
             frame.setJMenuBar(menuBar);
         }
         frame.add(component);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
