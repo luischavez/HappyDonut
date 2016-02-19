@@ -20,12 +20,15 @@ import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.util.DatabaseUtils;
 import com.geometrycloud.happydonut.util.UiUtils;
 
+import com.github.luischavez.database.link.Affecting;
 import com.github.luischavez.database.link.Row;
 import com.github.luischavez.database.link.RowList;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -42,7 +45,8 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 public class PointSalePanel extends JPanel
         implements CategoryListPanel.CategorySelectListener,
         ProductListPanel.ProductSelectListener,
-        CartListPanel.CartListener {
+        CartListPanel.CartListener,
+        CheckoutPanel.CheckoutListener {
 
     // Ancho del panel.
     public static final int PANEL_WIDTH = (IMAGE_WIDTH * 4) + 50;
@@ -94,6 +98,7 @@ public class PointSalePanel extends JPanel
         categoryListPanel.addCategorySelectListener(this);
         productListPanel.addCategorySelectListener(this);
         cartListPanel.addCartListener(this);
+        checkoutPanel.addCheckoutListener(this);
 
         pickerScroll.setViewportView(categoryListPanel);
         Dimension pickerSize = pickerScroll.getPreferredSize();
@@ -122,10 +127,10 @@ public class PointSalePanel extends JPanel
 
         constraints.gridx = 0;
         constraints.gridy = 1;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1;
         constraints.weighty = 1;
-        constraints.anchor = GridBagConstraints.LAST_LINE_START;
+        constraints.anchor = GridBagConstraints.CENTER;
         add(checkoutPanel, constraints);
 
         constraints.gridx = 1;
@@ -182,6 +187,31 @@ public class PointSalePanel extends JPanel
 
     @Override
     public void onProductRemoved() {
+        checkoutPanel.loadData();
+    }
+
+    @Override
+    public void onCheckout() {
+        RowList cartItems = DATABASE.table(CART_TABLE_NAME).get();
+        Affecting insert = DATABASE.insert(SALES_TABLE_NAME,
+                SALES_SALE_DATE,
+                LocalDateTime.now());
+        Object saleId = insert.getGeneratedKeys()[0];
+        for (Row cartItem : cartItems) {
+            Row product = DATABASE.table(PRODUCTS_TABLE_NAME)
+                    .where(PRODUCTS_PRIMARY_KEY, "=",
+                            cartItem.value(CART_PRODUCT))
+                    .first();
+            String name = product.string(PRODUCTS_NAME);
+            BigDecimal price = product.decimal(PRODUCTS_PRICE);
+            Long quantity = cartItem.number(CART_QUANTITY);
+            DATABASE.insert(SALE_DETAILS_TABLE_NAME,
+                    DatabaseUtils.columns(SALE_DETAILS_NAME, SALE_DETAILS_PRICE,
+                            SALE_DETAILS_QUANTITY, SALE_DETAILS_SALE),
+                    name, price, quantity, saleId);
+        }
+        DATABASE.delete(CART_TABLE_NAME);
+        cartListPanel.loadData();
         checkoutPanel.loadData();
     }
 

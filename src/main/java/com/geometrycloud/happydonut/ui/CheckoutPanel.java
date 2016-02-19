@@ -17,14 +17,21 @@
 package com.geometrycloud.happydonut.ui;
 
 import com.geometrycloud.happydonut.Fonts;
+import com.geometrycloud.happydonut.util.UiUtils;
 
 import com.github.luischavez.database.link.Row;
 import com.github.luischavez.database.link.RowList;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -37,13 +44,19 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  *
  * @author Luis Chávez Bustamante
  */
-public class CheckoutPanel extends JPanel {
+public class CheckoutPanel extends JPanel implements ActionListener {
+
+    // Observadores.
+    private final List<CheckoutListener> listeners = new ArrayList<>();
 
     // Items en el carrito.
     private RowList cartItems;
 
     // Etiqueta donde se mostrara el total.
     private final JLabel total = new JLabel(message("total").concat(" $0.00"));
+
+    // Boton para terminar la compra.
+    private final JButton checkout = new JButton(message("checkout"));
 
     /**
      * Constructor vacio.
@@ -56,7 +69,10 @@ public class CheckoutPanel extends JPanel {
      * Inicializa los componentes.
      */
     private void initComponents() {
+        checkout.addActionListener(this);
+
         total.setFont(Fonts.TITLE_FONT);
+        checkout.setFont(Fonts.TITLE_FONT);
 
         setLayout(new GridBagLayout());
 
@@ -67,8 +83,36 @@ public class CheckoutPanel extends JPanel {
         constraints.fill = GridBagConstraints.NONE;
         constraints.weightx = 1;
         constraints.weighty = 1;
-        constraints.anchor = GridBagConstraints.LAST_LINE_START;
+        constraints.anchor = GridBagConstraints.CENTER;
         add(total, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.anchor = GridBagConstraints.CENTER;
+        add(checkout, constraints);
+    }
+
+    /**
+     * Agrega un observador.
+     *
+     * @param listener observador.
+     */
+    public void addCheckoutListener(CheckoutListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    /**
+     * Elimina un observador.
+     *
+     * @param listener observador.
+     */
+    public void removeCheckoutListener(CheckoutListener listener) {
+        listeners.remove(listener);
     }
 
     /**
@@ -98,5 +142,48 @@ public class CheckoutPanel extends JPanel {
         double totalAmount = calculate();
         total.setText(String.format("%s $%.2f",
                 message("total"), totalAmount));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        InputNumberForm input = new InputNumberForm(
+                message("amount"), message("amount.description"), true);
+        boolean confirm = UiUtils.plain(
+                message("amount"),
+                input, (JComponent) this.getParent());
+        if (confirm) {
+            double result = input.result();
+            double totalAmount = calculate();
+            if (result < totalAmount) {
+                UiUtils.warning(
+                        message("warning.title"),
+                        message("warning.amount"), (JComponent) this.getParent());
+            } else {
+                if (result > totalAmount) {
+                    JLabel exchange
+                            = new JLabel(String.valueOf(result - totalAmount));
+                    exchange.setFont(Fonts.TITLE_FONT);
+                    UiUtils.display(message("exchange"),
+                            exchange, (JComponent) this.getParent());
+                }
+                UiUtils.display(
+                        message("thanks.title"),
+                        message("thanks.message"), (JComponent) this.getParent());
+                for (CheckoutListener listener : listeners) {
+                    listener.onCheckout();
+                }
+            }
+        }
+    }
+
+    /**
+     * Interface para la escucha de eventos de compra.
+     */
+    public interface CheckoutListener {
+
+        /**
+         * Se lanza cuando la compra se confirma.
+         */
+        void onCheckout();
     }
 }
