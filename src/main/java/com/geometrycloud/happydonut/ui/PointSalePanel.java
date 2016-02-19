@@ -16,7 +16,6 @@
  */
 package com.geometrycloud.happydonut.ui;
 
-import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.util.DatabaseUtils;
 import com.geometrycloud.happydonut.util.UiUtils;
 
@@ -213,10 +212,5 @@ public class PointSalePanel extends JPanel
         DATABASE.delete(CART_TABLE_NAME);
         cartListPanel.loadData();
         checkoutPanel.loadData();
-    }
-
-    public static void main(String... args) {
-        Main.loadLookAndFeel();
-        UiUtils.launch("MAIN", new PointSalePanel());
     }
 }

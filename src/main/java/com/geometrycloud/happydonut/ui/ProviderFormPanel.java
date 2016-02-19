@@ -16,10 +16,8 @@
  */
 package com.geometrycloud.happydonut.ui;
 
-import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.swing.Fillable;
 import com.geometrycloud.happydonut.swing.FormPanel;
-import com.geometrycloud.happydonut.util.UiUtils;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -155,11 +153,5 @@ public class ProviderFormPanel extends FormPanel {
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(ingredients, constraints);
-    }
-
-    public static void main(String... args) {
-        Main.loadLookAndFeel();
-        UiUtils.form("Provider form", new ProviderFormPanel(), null,
-                PROVIDERS_REQUIRED_FIELDS);
     }
 }

@@ -16,7 +16,6 @@
  */
 package com.geometrycloud.happydonut.ui;
 
-import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.filter.MaxSizeFilter;
 import com.geometrycloud.happydonut.swing.Fillable;
 import com.geometrycloud.happydonut.swing.FormPanel;
@@ -138,11 +137,5 @@ public class CategoryFormPanel extends FormPanel implements ActionListener {
                 }
             }
         }
-    }
-
-    public static void main(String... args) {
-        Main.loadLookAndFeel();
-        CategoryFormPanel form = new CategoryFormPanel();
-        UiUtils.form("Category Form", form, null, CATEGORIES_REQUIRED_FIELDS);
     }
 }

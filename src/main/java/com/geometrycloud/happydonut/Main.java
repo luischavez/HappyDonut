@@ -16,6 +16,10 @@
  */
 package com.geometrycloud.happydonut;
 
+import com.geometrycloud.happydonut.ui.MainMenu;
+import com.geometrycloud.happydonut.ui.PointSalePanel;
+import com.geometrycloud.happydonut.util.UiUtils;
+
 import com.github.luischavez.database.Database;
 
 import javax.swing.UIManager;
@@ -28,7 +32,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
 
     // Aspecto de la aplicacion.
-    public static final String LOOK_AND_FEEL = "com.jtattoo.plaf.texture.TextureLookAndFeel";
+    public static final String LOOK_AND_FEEL
+            = "com.jtattoo.plaf.texture.TextureLookAndFeel";
 
     /**
      * Establece el aspecto de la aplicacion.
@@ -48,5 +53,14 @@ public class Main {
 
         // Carga el aspecto seleccionado.
         loadLookAndFeel();
+
+        // Panel principal.
+        PointSalePanel pointSalePanel = new PointSalePanel();
+
+        // Menu.
+        MainMenu menu = new MainMenu();
+
+        // Se lanza la ventana.
+        UiUtils.launch(Context.message("app.name"), pointSalePanel, menu);
     }
 }

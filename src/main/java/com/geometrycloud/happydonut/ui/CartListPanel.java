@@ -17,8 +17,6 @@
 package com.geometrycloud.happydonut.ui;
 
 import com.geometrycloud.happydonut.Fonts;
-import com.geometrycloud.happydonut.Main;
-import com.geometrycloud.happydonut.util.DatabaseUtils;
 import com.geometrycloud.happydonut.util.UiUtils;
 
 import com.github.luischavez.database.link.Row;
@@ -206,19 +204,5 @@ public class CartListPanel extends JPanel implements ActionListener {
          * Se lanza cuando se remueve un producto del carrito.
          */
         void onProductRemoved();
-    }
-
-    public static void main(String... args) {
-        RowList products = DATABASE.table(PRODUCTS_TABLE_NAME).get();
-        for (Row product : products) {
-            Object productId = product.value(PRODUCTS_PRIMARY_KEY);
-            DATABASE.insert(CART_TABLE_NAME,
-                    DatabaseUtils.columns(CART_PRODUCT, CART_QUANTITY),
-                    productId, 1);
-        }
-        Main.loadLookAndFeel();
-        CartListPanel cart = new CartListPanel();
-        cart.loadData();
-        UiUtils.launch("CART", cart);
     }
 }

@@ -17,7 +17,6 @@
 package com.geometrycloud.happydonut.ui;
 
 import com.geometrycloud.happydonut.Context;
-import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.swing.DatabaseComboBox;
 import com.geometrycloud.happydonut.swing.DatabaseComboBoxModel;
 import com.geometrycloud.happydonut.swing.Fillable;
@@ -233,11 +232,5 @@ public class ProductFormPanel extends FormPanel implements ActionListener {
                 }
             }
         }
-    }
-
-    public static void main(String... args) {
-        Main.loadLookAndFeel();
-        ProductFormPanel form = new ProductFormPanel();
-        UiUtils.form("Product form", form, null, PRODUCTS_REQUIRED_FIELDS);
     }
 }

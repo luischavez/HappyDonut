@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,15 +39,21 @@ public class UiUtils {
      *
      * @param title titulo.
      * @param component componente.
+     * @param menuBar barra de menu.
      */
-    public static void launch(String title, JComponent component) {
+    public static void launch(String title,
+            JComponent component, JMenuBar menuBar) {
         JFrame frame = new JFrame(title);
+        if (null != menuBar) {
+            frame.setJMenuBar(menuBar);
+        }
         frame.add(component);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
     }
 
     /**

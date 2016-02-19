@@ -16,7 +16,6 @@
  */
 package com.geometrycloud.happydonut.ui;
 
-import com.geometrycloud.happydonut.Main;
 import com.geometrycloud.happydonut.util.UiUtils;
 
 import java.awt.GridBagConstraints;
@@ -127,10 +126,5 @@ public class AdminPanel extends JPanel implements ActionListener {
         if (null != modelPanel) {
             UiUtils.display(message(title), modelPanel, this);
         }
-    }
-
-    public static void main(String... args) {
-        Main.loadLookAndFeel();
-        UiUtils.launch("Admin", new AdminPanel());
     }
 }
