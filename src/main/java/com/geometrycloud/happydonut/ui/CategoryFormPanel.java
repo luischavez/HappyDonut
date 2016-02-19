@@ -120,7 +120,7 @@ public class CategoryFormPanel extends FormPanel implements ActionListener {
             JFileChooser chooser = new JFileChooser();
             chooser.setAcceptAllFileFilterUsed(false);
             chooser.setFileFilter(
-                    new FileNameExtensionFilter("Image Files", "jpg"));
+                    new FileNameExtensionFilter("Image Files", "jpg", "png"));
             int option = chooser.showOpenDialog(this);
             if (JFileChooser.APPROVE_OPTION == option) {
                 File file = chooser.getSelectedFile();
