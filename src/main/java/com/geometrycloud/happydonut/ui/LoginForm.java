@@ -24,10 +24,12 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import static com.geometrycloud.happydonut.Context.*;
 
 /**
+ * Formulario para el inicio de sesion.
  *
  * @author Luis Chávez Bustamante
  */
@@ -40,7 +42,7 @@ public class LoginForm extends FormPanel {
 
     // Campo contrasena.
     @Fillable(name = PASSWORD)
-    private final JPasswordField password = new JPasswordField();
+    private final JTextField password = new JPasswordField();
 
     /**
      * Constructor por defecto.

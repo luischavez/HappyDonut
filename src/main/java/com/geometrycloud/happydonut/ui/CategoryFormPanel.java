@@ -19,21 +19,12 @@ package com.geometrycloud.happydonut.ui;
 import com.geometrycloud.happydonut.filter.MaxSizeFilter;
 import com.geometrycloud.happydonut.swing.Fillable;
 import com.geometrycloud.happydonut.swing.FormPanel;
-import com.geometrycloud.happydonut.swing.ImagePanel;
-import com.geometrycloud.happydonut.util.UiUtils;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import static com.geometrycloud.happydonut.Context.*;
 import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
@@ -43,17 +34,10 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  *
  * @author Luis Chavez Bustamante
  */
-public class CategoryFormPanel extends FormPanel implements ActionListener {
+public class CategoryFormPanel extends FormPanel {
 
     /* Etiquetas. */
     private final JLabel nameLabel = new JLabel(message("add"));
-
-    // Boton para la busqueda de imagenes.
-    private final JButton searchImageButton = new JButton(message("search"));
-
-    // Campo imagen.
-    @Fillable(name = CATEGORIES_IMAGE)
-    private final ImagePanel image = new ImagePanel();
 
     // Campo nombre.
     @Fillable(name = CATEGORIES_NAME)
@@ -70,10 +54,6 @@ public class CategoryFormPanel extends FormPanel implements ActionListener {
      * Inicializa los componentes.
      */
     private void initComponents() {
-        searchImageButton.addActionListener(this);
-
-        image.setSize(new Dimension(IMAGE_WIDTH, IMAGE_HEIGHT));
-
         setFilter(name.getDocument(), new MaxSizeFilter(CATEGORY_NAME_SIZE));
 
         setLayout(new GridBagLayout());
@@ -81,20 +61,6 @@ public class CategoryFormPanel extends FormPanel implements ActionListener {
         GridBagConstraints constraints = new GridBagConstraints();
 
         constraints.gridwidth = GridBagConstraints.REMAINDER;
-
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-        add(image, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-        add(searchImageButton, constraints);
 
         constraints.gridwidth = 1;
         constraints.insets.set(5, 5, 5, 5);
@@ -112,27 +78,5 @@ public class CategoryFormPanel extends FormPanel implements ActionListener {
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(name, constraints);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (searchImageButton == e.getSource()) {
-            JFileChooser chooser = new JFileChooser();
-            chooser.setAcceptAllFileFilterUsed(false);
-            chooser.setFileFilter(
-                    new FileNameExtensionFilter("Image Files", "jpg", "png"));
-            int option = chooser.showOpenDialog(this);
-            if (JFileChooser.APPROVE_OPTION == option) {
-                File file = chooser.getSelectedFile();
-                image.load(file);
-                if (IMAGE_WIDTH < image.getImage().getWidth()
-                        || IMAGE_HEIGHT < image.getImage().getHeight()) {
-                    image.setBytes(null);
-                    UiUtils.warning(
-                            message("warning.title"),
-                            message("warning.image"), this);
-                }
-            }
-        }
     }
 }

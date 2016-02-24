@@ -55,9 +55,6 @@ public class ProductListPanel extends JPanel implements MouseListener {
     // Numero maximo de items por fila.
     private final int maxItemsPerRow;
 
-    // Categoria de los productos.
-    private Row category;
-
     // Listado de productos.
     private RowList products;
 
@@ -83,34 +80,10 @@ public class ProductListPanel extends JPanel implements MouseListener {
     }
 
     /**
-     * Obtiene la categoria.
-     *
-     * @return categoria.
-     */
-    public Row getCategory() {
-        return category;
-    }
-
-    /**
-     * Establece la categoria.
-     *
-     * @param category categoria.
-     */
-    public void setCategory(Row category) {
-        this.category = category;
-    }
-
-    /**
      * Carga la informacion desde la base de datos.
      */
     public void loadData() {
-        if (null == category) {
-            return;
-        }
-        products = DATABASE.table(PRODUCTS_TABLE_NAME)
-                .where(PRODUCTS_CATEGORY, "=",
-                        category.value(CATEGORIES_PRIMARY_KEY))
-                .get();
+        products = DATABASE.table(PRODUCTS_TABLE_NAME).get();
         removeAll();
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;

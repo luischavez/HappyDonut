@@ -42,13 +42,12 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
  * @author Luis Chavez Bustamante
  */
 public class PointSalePanel extends JPanel
-        implements CategoryListPanel.CategorySelectListener,
-        ProductListPanel.ProductSelectListener,
+        implements ProductListPanel.ProductSelectListener,
         CartListPanel.CartListener,
         CheckoutPanel.CheckoutListener {
 
     // Numero maximo de item por fila.
-    public static final int MAX_ITEMS_PER_ROW = 3;
+    public static final int MAX_ITEMS_PER_ROW = 8;
 
     // Panel contenedor de las categorias y los productos.
     private final JScrollPane pickerScroll = new JScrollPane();
@@ -57,9 +56,8 @@ public class PointSalePanel extends JPanel
     private final JScrollPane cartScroll = new JScrollPane();
 
     // Panel con la lista de categorias.
-    private final CategoryListPanel categoryListPanel
-            = new CategoryListPanel(MAX_ITEMS_PER_ROW);
-
+    //private final CategoryListPanel categoryListPanel
+    //        = new CategoryListPanel(MAX_ITEMS_PER_ROW);
     // Panel con la lista de productos.
     private final ProductListPanel productListPanel
             = new ProductListPanel(MAX_ITEMS_PER_ROW);
@@ -81,16 +79,15 @@ public class PointSalePanel extends JPanel
      * Inicializa los componentes.
      */
     private void initComponents() {
-        categoryListPanel.loadData();
+        productListPanel.loadData();
         cartListPanel.loadData();
         checkoutPanel.loadData();
 
-        categoryListPanel.addCategorySelectListener(this);
         productListPanel.addCategorySelectListener(this);
         cartListPanel.addCartListener(this);
         checkoutPanel.addCheckoutListener(this);
 
-        pickerScroll.setViewportView(categoryListPanel);
+        pickerScroll.setViewportView(productListPanel);
         Dimension pickerSize = pickerScroll.getPreferredSize();
         pickerSize.width += IMAGE_WIDTH / 2;
         pickerSize.height += IMAGE_HEIGHT / 4;
@@ -135,24 +132,6 @@ public class PointSalePanel extends JPanel
     }
 
     @Override
-    public void onSelectCategory(Row category) {
-        RowList products = DATABASE.table(PRODUCTS_TABLE_NAME)
-                .where(PRODUCTS_CATEGORY, "=",
-                        category.value(CATEGORIES_PRIMARY_KEY))
-                .get();
-        if (products.empty()) {
-            UiUtils.warning(
-                    message("warning.title"),
-                    message("warning.empty"), this);
-        } else {
-            productListPanel.setCategory(category);
-            productListPanel.loadData();
-            pickerScroll.setViewportView(productListPanel);
-            UiUtils.repaint(this);
-        }
-    }
-
-    @Override
     public void onSelectProduct(Row product) {
         InputNumberForm input = new InputNumberForm(
                 message("quantity"),
@@ -183,8 +162,7 @@ public class PointSalePanel extends JPanel
             cartListPanel.loadData();
             checkoutPanel.loadData();
         }
-        categoryListPanel.loadData();
-        pickerScroll.setViewportView(categoryListPanel);
+        productListPanel.loadData();
         UiUtils.repaint(this);
     }
 

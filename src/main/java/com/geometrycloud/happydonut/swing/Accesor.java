@@ -19,6 +19,7 @@ package com.geometrycloud.happydonut.swing;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
@@ -96,6 +97,7 @@ public abstract class Accesor<T, V> {
      */
     public static void registerDefaults() {
         register(JTextField.class, new JTextFieldAccesor());
+        register(JPasswordField.class, new JPasswordFieldAccesor());
         register(ImagePanel.class, new ImagePanelAccesor());
         register(DatabaseComboBox.class, new DatabaseComboBoxAccesor());
     }

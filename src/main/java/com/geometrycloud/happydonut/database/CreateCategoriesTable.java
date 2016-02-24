@@ -39,7 +39,6 @@ public class CreateCategoriesTable implements Migration {
         database.create(CATEGORIES_TABLE_NAME, (table) -> {
             table.integer(CATEGORIES_PRIMARY_KEY).unsigned().incremented();
             table.string(CATEGORIES_NAME, CATEGORY_NAME_SIZE);
-            table.binary(CATEGORIES_IMAGE);
 
             table.primary(CATEGORIES_PRIMARY_KEY);
         });

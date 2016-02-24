@@ -30,10 +30,10 @@ public class DatabaseConstants {
     public static final String DATABASE_NAME = "default";
 
     // Ancho de las imagenes.
-    public static final int IMAGE_WIDTH = 240;
+    public static final int IMAGE_WIDTH = 50;
 
     // Alto de las imagenes.
-    public static final int IMAGE_HEIGHT = 240;
+    public static final int IMAGE_HEIGHT = 50;
 
     // Definicion de la tabla de proveedores.
     public static final String PROVIDERS_TABLE_NAME = "providers";
@@ -64,7 +64,6 @@ public class DatabaseConstants {
     // Definicion de la tabla de categorias.
     public static final String CATEGORIES_TABLE_NAME = "categories";
     public static final String CATEGORIES_PRIMARY_KEY = "category_id";
-    public static final String CATEGORIES_IMAGE = "image";
     public static final String CATEGORIES_NAME = "name";
 
     public static final int CATEGORY_NAME_SIZE = 128;
@@ -74,7 +73,7 @@ public class DatabaseConstants {
     };
 
     public static final String[] CATEGORIES_REQUIRED_FIELDS = {
-        CATEGORIES_IMAGE, CATEGORIES_NAME
+        CATEGORIES_NAME
     };
 
     // Definicion de la tabla de productos.
