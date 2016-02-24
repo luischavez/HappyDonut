@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -124,15 +125,41 @@ public class CartListPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         boolean confirm = UiUtils.confirm(
                 message("warning.title"),
-                message("warning.delete"), this);
+                message("warning.delete"),
+                (JComponent) this.getParent().getParent());
         if (confirm) {
+            InputNumberForm input = new InputNumberForm(
+                    message("quantity"),
+                    message("quantity.description"), false);
+
             Object cartItemId = e.getActionCommand();
 
-            DATABASE.where(CART_PRIMARY_KEY, "=", cartItemId)
-                    .delete(CART_TABLE_NAME);
-            loadData();
-            for (CartListener listener : listeners) {
-                listener.onProductRemoved();
+            Row cartItem = DATABASE.table(CART_TABLE_NAME)
+                    .where(CART_PRIMARY_KEY, "=", cartItemId)
+                    .first();
+
+            Long max = cartItem.number(CART_QUANTITY);
+
+            input.getNumPad().setMax(max);
+
+            boolean confirmInput = UiUtils.plain(
+                    message("amount"),
+                    input, (JComponent) this.getParent().getParent());
+
+            if (confirmInput) {
+                double result = input.result();
+                if (result == max) {
+                    DATABASE.where(CART_PRIMARY_KEY, "=", cartItemId)
+                            .delete(CART_TABLE_NAME);
+                } else {
+                    DATABASE.where(CART_PRIMARY_KEY, "=", cartItemId)
+                            .update(CART_TABLE_NAME,
+                                    CART_QUANTITY, max - result);
+                }
+                loadData();
+                for (CartListener listener : listeners) {
+                    listener.onProductRemoved();
+                }
             }
         }
     }

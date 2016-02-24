@@ -46,7 +46,11 @@ public class VirtualNumPad extends JPanel implements ActionListener {
     private final JButton dot = new JButton(".");
     private final JButton delete = new JButton("<<");
 
+    // Campo donde mostrar el valor actual.
     private final JTextField field;
+
+    // Numero maximo.
+    private double max = Double.MAX_VALUE;
 
     /**
      * Constructor principal.
@@ -154,6 +158,24 @@ public class VirtualNumPad extends JPanel implements ActionListener {
     }
 
     /**
+     * Obtiene el numero maximo.
+     *
+     * @return numero maximo.
+     */
+    public double getMax() {
+        return max;
+    }
+
+    /**
+     * Establece el numero maximo.
+     *
+     * @param max numero maximo.
+     */
+    public void setMax(double max) {
+        this.max = max;
+    }
+
+    /**
      * Lanza una pulsacion de la tecla indicada.
      *
      * @param keycode codigo de la tecla.
@@ -176,9 +198,17 @@ public class VirtualNumPad extends JPanel implements ActionListener {
         }
         try {
             if (!value.contains(".")) {
-                field.setText(new Integer(value).toString());
+                Integer newValue = new Integer(value);
+                if (max < newValue) {
+                    return;
+                }
+                field.setText(newValue.toString());
             } else {
-                field.setText(new Double(value).toString());
+                Double newValue = new Double(value);
+                if (max < newValue) {
+                    return;
+                }
+                field.setText(newValue.toString());
             }
         } catch (NumberFormatException ex) {
             // IGNORE.

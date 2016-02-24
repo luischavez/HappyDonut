@@ -100,6 +100,15 @@ public class InputNumberForm extends JPanel {
     }
 
     /**
+     * Obtiene el pad numerico virtual.
+     *
+     * @return pad numerico.
+     */
+    public VirtualNumPad getNumPad() {
+        return numPad;
+    }
+
+    /**
      * Obtiene el resultado.
      *
      * @return resultado.

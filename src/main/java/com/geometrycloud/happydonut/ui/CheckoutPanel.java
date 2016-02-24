@@ -169,6 +169,18 @@ public class CheckoutPanel extends JPanel implements ActionListener {
                     UiUtils.display(message("exchange"),
                             exchange, (JComponent) this.getParent());
                 }
+                for (Row cartItem : cartItems) {
+                    Row product = DATABASE.table(PRODUCTS_TABLE_NAME)
+                            .where(PRODUCTS_PRIMARY_KEY, "=",
+                                    cartItem.value(CART_PRODUCT))
+                            .first();
+                    Object productId = product.number(PRODUCTS_PRIMARY_KEY);
+                    Long stock = product.number(PRODUCTS_STOCK);
+                    Long quantity = cartItem.number(CART_QUANTITY);
+                    DATABASE.where(PRODUCTS_PRIMARY_KEY, "=", productId)
+                            .update(PRODUCTS_TABLE_NAME,
+                                    PRODUCTS_STOCK, stock - quantity);
+                }
                 UiUtils.display(
                         message("thanks.title"),
                         message("thanks.message"), (JComponent) this.getParent());

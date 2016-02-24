@@ -157,16 +157,29 @@ public class PointSalePanel extends JPanel
         InputNumberForm input = new InputNumberForm(
                 message("quantity"),
                 message("quantity.description"), false);
+        Object productId = product.value(PRODUCTS_PRIMARY_KEY);
+        Long stock = product.number(PRODUCTS_STOCK);
+        Row cartItem = DATABASE.table(CART_TABLE_NAME)
+                .where(CART_PRODUCT, "=", productId)
+                .first();
+        Long alreadyAdded = null != cartItem ? cartItem.number(CART_QUANTITY) : 0;
+        input.getNumPad().setMax(stock - alreadyAdded);
         boolean confirm = UiUtils.plain(message("quantity"), input, this);
         if (confirm) {
-            Object productId = product.value(PRODUCTS_PRIMARY_KEY);
             double quantity = input.result();
             if (1 > quantity) {
                 return;
             }
-            DATABASE.insert(CART_TABLE_NAME,
-                    DatabaseUtils.columns(CART_PRODUCT, CART_QUANTITY),
-                    productId, quantity);
+            if (null == cartItem) {
+                DATABASE.insert(CART_TABLE_NAME,
+                        DatabaseUtils.columns(CART_PRODUCT, CART_QUANTITY),
+                        productId, quantity);
+            } else {
+                DATABASE.where(CART_PRIMARY_KEY, "=",
+                        cartItem.number(CART_PRIMARY_KEY))
+                        .update(CART_TABLE_NAME,
+                                CART_QUANTITY, alreadyAdded + quantity);
+            }
             cartListPanel.loadData();
             checkoutPanel.loadData();
         }
