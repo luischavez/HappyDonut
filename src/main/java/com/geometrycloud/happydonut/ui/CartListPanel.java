@@ -140,6 +140,16 @@ public class CartListPanel extends JPanel implements ActionListener {
 
             Long max = cartItem.number(CART_QUANTITY);
 
+            if (1 == max) {
+                DATABASE.where(CART_PRIMARY_KEY, "=", cartItemId)
+                        .delete(CART_TABLE_NAME);
+                loadData();
+                for (CartListener listener : listeners) {
+                    listener.onProductRemoved();
+                }
+                return;
+            }
+
             input.getNumPad().setMax(max);
 
             boolean confirmInput = UiUtils.plain(
