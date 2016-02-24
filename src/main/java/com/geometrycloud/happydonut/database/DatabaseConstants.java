@@ -30,10 +30,10 @@ public class DatabaseConstants {
     public static final String DATABASE_NAME = "default";
 
     // Ancho de las imagenes.
-    public static final int IMAGE_WIDTH = 50;
+    public static final int IMAGE_WIDTH = 100;
 
     // Alto de las imagenes.
-    public static final int IMAGE_HEIGHT = 50;
+    public static final int IMAGE_HEIGHT = 100;
 
     // Definicion de la tabla de proveedores.
     public static final String PROVIDERS_TABLE_NAME = "providers";
