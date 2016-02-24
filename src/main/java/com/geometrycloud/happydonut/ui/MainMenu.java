@@ -20,6 +20,7 @@ import com.geometrycloud.happydonut.util.UiUtils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -34,6 +35,9 @@ import static com.geometrycloud.happydonut.Context.*;
  * @author Luis Chavez Bustamante
  */
 public class MainMenu extends JMenuBar implements ActionListener {
+
+    // Contrasena por defecto.
+    public static final String DEFAULT_PASSWORD = "pass";
 
     // Menu ver.
     private final JMenu view = new JMenu(message("view"));
@@ -62,8 +66,22 @@ public class MainMenu extends JMenuBar implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (admin == source) {
-            UiUtils.display(message("admin"),
-                    new AdminPanel(), (JComponent) this.getParent());
+            LoginForm loginForm = new LoginForm();
+            boolean confirm = UiUtils.plain(message("login"),
+                    loginForm, (JComponent) this.getParent());
+            if (confirm) {
+                Map<String, Object> map = loginForm.get();
+                Object password = map.get(LoginForm.PASSWORD);
+                if (!password.equals(DEFAULT_PASSWORD)) {
+                    UiUtils.warning(
+                            message("warning.title"),
+                            message("warning.login"),
+                            (JComponent) this.getParent());
+                    return;
+                }
+                UiUtils.display(message("admin"),
+                        new AdminPanel(), (JComponent) this.getParent());
+            }
         }
     }
 }
