@@ -44,7 +44,8 @@ import static com.geometrycloud.happydonut.database.DatabaseConstants.*;
 public class PointSalePanel extends JPanel
         implements ProductListPanel.ProductSelectListener,
         CartListPanel.CartListener,
-        CheckoutPanel.CheckoutListener {
+        CheckoutPanel.CheckoutListener,
+        ModelPanel.ModelListener {
 
     // Numero maximo de item por fila.
     public static final int MAX_ITEMS_PER_ROW = 8;
@@ -79,6 +80,7 @@ public class PointSalePanel extends JPanel
      * Inicializa los componentes.
      */
     private void initComponents() {
+        ModelPanel.MODEL_LISTENERS.add(this);
         productListPanel.loadData();
         cartListPanel.loadData();
         checkoutPanel.loadData();
@@ -129,6 +131,13 @@ public class PointSalePanel extends JPanel
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.gridheight = GridBagConstraints.REMAINDER;
         add(cartScroll, constraints);
+    }
+
+    private void refreshAll() {
+        productListPanel.loadData();
+        cartListPanel.loadData();
+        checkoutPanel.loadData();
+        UiUtils.repaint(this);
     }
 
     @Override
@@ -194,5 +203,20 @@ public class PointSalePanel extends JPanel
         DATABASE.delete(CART_TABLE_NAME);
         cartListPanel.loadData();
         checkoutPanel.loadData();
+    }
+
+    @Override
+    public void onInsert() {
+        refreshAll();
+    }
+
+    @Override
+    public void onUpdate() {
+        refreshAll();
+    }
+
+    @Override
+    public void onDelete() {
+        refreshAll();
     }
 }

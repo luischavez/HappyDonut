@@ -32,6 +32,8 @@ import java.awt.event.KeyListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -51,6 +53,10 @@ import static com.geometrycloud.happydonut.Context.*;
  * @author Luis Chávez Bustamante
  */
 public class ModelPanel extends JPanel implements ActionListener, KeyListener {
+
+    // Observadores globales.
+    public static final List<ModelListener> MODEL_LISTENERS
+            = new ArrayList<>();
 
     // Nombre de la tabla en la base de datos.
     private final String tableName;
@@ -156,6 +162,9 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
                             .update(tableName,
                                     DatabaseUtils.columns(map),
                                     DatabaseUtils.values(map));
+                    for (ModelListener listener : MODEL_LISTENERS) {
+                        listener.onUpdate();
+                    }
                     model.loadData();
                     UiUtils.repaint(table);
                 }
@@ -174,6 +183,9 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
                     DATABASE.where(primaryKeyName, "=",
                             row.value(primaryKeyName))
                             .delete(tableName);
+                    for (ModelListener listener : MODEL_LISTENERS) {
+                        listener.onDelete();
+                    }
                     model.loadData();
                     UiUtils.repaint(table);
                 }
@@ -254,6 +266,9 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
                 DATABASE.insert(tableName,
                         DatabaseUtils.columns(map),
                         DatabaseUtils.values(map));
+                for (ModelListener listener : MODEL_LISTENERS) {
+                    listener.onInsert();
+                }
                 model.loadData();
                 UiUtils.repaint(table);
             }
@@ -281,5 +296,26 @@ public class ModelPanel extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+    }
+
+    /**
+     * Interfaz para la escucha de eventos relacionados con los modelos.
+     */
+    public interface ModelListener {
+
+        /**
+         * Se lanza cuando se inserta un registro.
+         */
+        void onInsert();
+
+        /**
+         * Se lanza cuando se actualiza un registro.
+         */
+        void onUpdate();
+
+        /**
+         * Se lanza cuando se elimina un registro.
+         */
+        void onDelete();
     }
 }
