@@ -48,7 +48,7 @@ public class PointSalePanel extends JPanel
         ModelPanel.ModelListener {
 
     // Numero maximo de item por fila.
-    public static final int MAX_ITEMS_PER_ROW = 8;
+    public static final int MAX_ITEMS_PER_ROW = 5;
 
     // Panel contenedor de las categorias y los productos.
     private final JScrollPane pickerScroll = new JScrollPane();

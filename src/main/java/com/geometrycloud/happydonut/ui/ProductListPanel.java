@@ -85,15 +85,32 @@ public class ProductListPanel extends JPanel implements MouseListener {
         constraints.gridy = 0;
         constraints.fill = GridBagConstraints.NONE;
         constraints.weightx = 1;
-        constraints.weighty = 1;
+        constraints.weighty = 0;
+        String categoryName = "";
         int x = 0;
         int y = 1;
         int count = 0;
         for (Row product : products) {
+            Object categoryId = product.number(PRODUCTS_CATEGORY);
+            Row category = DATABASE.table(CATEGORIES_TABLE_NAME)
+                    .where(CATEGORIES_PRIMARY_KEY, "=", categoryId)
+                    .first();
+            String currentCategoryName = category.string(CATEGORIES_NAME);
             if (maxItemsPerRow == count++) {
                 x = 0;
                 y++;
                 count = 0;
+            }
+            if (!categoryName.equals(currentCategoryName)) {
+                x = 0;
+                y++;
+                count = 0;
+                categoryName = currentCategoryName;
+                constraints.gridwidth = GridBagConstraints.REMAINDER;
+                JLabel title = new JLabel(categoryName);
+                title.setFont(Fonts.TITLE_FONT);
+                add(title, constraints);
+                constraints.gridwidth = 1;
             }
             ProductItem item = new ProductItem(product);
             constraints.gridx = x++;
