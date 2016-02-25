@@ -85,7 +85,7 @@ public class ProductListPanel extends JPanel implements MouseListener {
         constraints.gridy = 0;
         constraints.fill = GridBagConstraints.NONE;
         constraints.weightx = 1;
-        constraints.weighty = 0;
+        constraints.weighty = 1;
         String categoryName = "";
         int x = 0;
         int y = 1;
@@ -107,10 +107,13 @@ public class ProductListPanel extends JPanel implements MouseListener {
                 count = 0;
                 categoryName = currentCategoryName;
                 constraints.gridwidth = GridBagConstraints.REMAINDER;
+                constraints.gridx = x;
+                constraints.gridy = y;
                 JLabel title = new JLabel(categoryName);
-                title.setFont(Fonts.TITLE_FONT);
+                title.setFont(Fonts.TEXT_FONT);
                 add(title, constraints);
                 constraints.gridwidth = 1;
+                y++;
             }
             ProductItem item = new ProductItem(product);
             constraints.gridx = x++;

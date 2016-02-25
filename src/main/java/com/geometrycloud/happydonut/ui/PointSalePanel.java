@@ -88,8 +88,8 @@ public class PointSalePanel extends JPanel
 
         pickerScroll.setViewportView(productListPanel);
         Dimension pickerSize = pickerScroll.getPreferredSize();
-        pickerSize.width += IMAGE_WIDTH * MAX_ITEMS_PER_ROW;
-        pickerSize.height += IMAGE_HEIGHT * 4;
+        pickerSize.width = IMAGE_WIDTH * MAX_ITEMS_PER_ROW;
+        pickerSize.height = IMAGE_HEIGHT * 5;
         pickerScroll.setPreferredSize(pickerSize);
 
         cartScroll.setViewportView(cartListPanel);
