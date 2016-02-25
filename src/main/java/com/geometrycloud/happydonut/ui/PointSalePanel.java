@@ -56,9 +56,6 @@ public class PointSalePanel extends JPanel
     // Panel contenedor del carrito.
     private final JScrollPane cartScroll = new JScrollPane();
 
-    // Panel con la lista de categorias.
-    //private final CategoryListPanel categoryListPanel
-    //        = new CategoryListPanel(MAX_ITEMS_PER_ROW);
     // Panel con la lista de productos.
     private final ProductListPanel productListPanel
             = new ProductListPanel(MAX_ITEMS_PER_ROW);
@@ -91,8 +88,8 @@ public class PointSalePanel extends JPanel
 
         pickerScroll.setViewportView(productListPanel);
         Dimension pickerSize = pickerScroll.getPreferredSize();
-        pickerSize.width += IMAGE_WIDTH / 2;
-        pickerSize.height += IMAGE_HEIGHT / 4;
+        pickerSize.width += IMAGE_WIDTH * MAX_ITEMS_PER_ROW;
+        pickerSize.height += IMAGE_HEIGHT * 4;
         pickerScroll.setPreferredSize(pickerSize);
 
         cartScroll.setViewportView(cartListPanel);

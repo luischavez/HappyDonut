@@ -49,9 +49,6 @@ public class ProductListPanel extends JPanel implements MouseListener {
     // Listado de observadores.
     private final List<ProductSelectListener> listeners = new ArrayList<>();
 
-    // Titulo del listado.
-    private final JLabel title = new JLabel(message(PRODUCTS_TABLE_NAME));
-
     // Numero maximo de items por fila.
     private final int maxItemsPerRow;
 
@@ -74,8 +71,6 @@ public class ProductListPanel extends JPanel implements MouseListener {
     private void initComponents() {
         addMouseListener(this);
 
-        title.setFont(Fonts.TITLE_FONT);
-
         setLayout(new GridBagLayout());
     }
 
@@ -91,9 +86,6 @@ public class ProductListPanel extends JPanel implements MouseListener {
         constraints.fill = GridBagConstraints.NONE;
         constraints.weightx = 1;
         constraints.weighty = 1;
-        constraints.gridwidth = GridBagConstraints.REMAINDER;
-        add(title, constraints);
-        constraints.gridwidth = 1;
         int x = 0;
         int y = 1;
         int count = 0;
